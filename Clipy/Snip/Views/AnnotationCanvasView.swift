@@ -27,6 +27,7 @@ final class AnnotationCanvasView: NSView {
     private var stepCounter = 0
     private var activeTextEditor: NSTextField?
     private let history = UndoManager()
+    private lazy var autoBorderColor: NSColor = Self.isDark(baseImage) ? .white : .black
 
     init(baseImage: NSImage) {
         self.baseImage = baseImage
@@ -133,8 +134,35 @@ private extension AnnotationCanvasView {
         let inset = currentLineWidth / 2
         let path = NSBezierPath(rect: rect.insetBy(dx: inset, dy: inset))
         path.lineWidth = currentLineWidth
-        currentColor.setStroke()
+        autoBorderColor.setStroke()
         path.stroke()
+    }
+
+    static func isDark(_ image: NSImage) -> Bool {
+        let sampleSize = 16
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil),
+              let colorSpace = CGColorSpace(name: CGColorSpace.sRGB),
+              let context = CGContext(
+                data: nil,
+                width: sampleSize,
+                height: sampleSize,
+                bitsPerComponent: 8,
+                bytesPerRow: sampleSize * 4,
+                space: colorSpace,
+                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+              ),
+              let data = context.data else { return false }
+        context.draw(cgImage, in: CGRect(x: 0, y: 0, width: sampleSize, height: sampleSize))
+
+        let buffer = data.bindMemory(to: UInt8.self, capacity: sampleSize * sampleSize * 4)
+        var totalLuminance: CGFloat = 0
+        for pixel in 0..<(sampleSize * sampleSize) {
+            let red = CGFloat(buffer[pixel * 4]) / 255
+            let green = CGFloat(buffer[pixel * 4 + 1]) / 255
+            let blue = CGFloat(buffer[pixel * 4 + 2]) / 255
+            totalLuminance += 0.299 * red + 0.587 * green + 0.114 * blue
+        }
+        return (totalLuminance / CGFloat(sampleSize * sampleSize)) < 0.5
     }
 
     func shapeForDrag(from start: NSPoint, to end: NSPoint) -> SnipShape {

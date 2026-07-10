@@ -16,16 +16,22 @@ final class SnipAnnotationWindowController: NSWindowController {
     var onFinish: ((FinishAction, NSImage?) -> Void)?
 
     private let canvasView: AnnotationCanvasView
-    private let toolbarView = AnnotationToolbarView(frame: .zero)
+    private let toolbarView: AnnotationToolbarView
 
     private static let toolbarHeight: CGFloat = 30
-    private static let minimumToolbarWidth: CGFloat = 340
+    private static let reservedDragSpace: CGFloat = 60
 
     init(image: NSImage, screenPoint: NSPoint) {
         let canvas = AnnotationCanvasView(baseImage: image)
         self.canvasView = canvas
+        let toolbar = AnnotationToolbarView(frame: .zero)
+        self.toolbarView = toolbar
 
-        let contentSize = NSSize(width: max(image.size.width, Self.minimumToolbarWidth), height: image.size.height + Self.toolbarHeight)
+        // The toolbar's own buttons can fill most/all of a narrow window, leaving no empty
+        // strip to grab for isMovableByWindowBackground - reserve extra width on top of the
+        // toolbar's natural fitting size so there's always a draggable gap.
+        let minimumToolbarWidth = toolbar.fittingSize.width + Self.reservedDragSpace
+        let contentSize = NSSize(width: max(image.size.width, minimumToolbarWidth), height: image.size.height + Self.toolbarHeight)
         let window = SnipBorderlessWindow(
             contentRect: NSRect(origin: screenPoint, size: contentSize),
             styleMask: [.borderless],

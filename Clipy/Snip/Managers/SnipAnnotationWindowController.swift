@@ -27,8 +27,10 @@ final class SnipAnnotationWindowController: NSWindowController {
     private static let borderWidth: CGFloat = 1.5
     // Space reserved around the canvas purely for the border-preview ring; always laid out
     // (whether or not the border is currently shown) so toggling it never has to resize the
-    // window or reposition already-drawn shapes.
-    private static let previewMargin: CGFloat = 8
+    // window or reposition already-drawn shapes. Matches borderWidth exactly so the preview
+    // ring sits flush against the canvas with no visible gap, mirroring how addBorderIfNeeded(to:)
+    // pads the real exported image.
+    private static let previewMargin: CGFloat = borderWidth
 
     init(image: NSImage, screenPoint: NSPoint) {
         let canvas = AnnotationCanvasView(baseImage: image)

@@ -17,9 +17,11 @@ final class SnipAnnotationWindowController: NSWindowController {
 
     private let canvasView: AnnotationCanvasView
     private let toolbarView: AnnotationToolbarView
+    private var showsBorder = false
 
     private static let toolbarHeight: CGFloat = 30
     private static let reservedDragSpace: CGFloat = 60
+    private static let borderWidth: CGFloat = 1.5
 
     init(image: NSImage, screenPoint: NSPoint) {
         let canvas = AnnotationCanvasView(baseImage: image)
@@ -90,8 +92,8 @@ private extension SnipAnnotationWindowController {
         toolbarView.onEyedropper = { [weak self] in
             self?.pickColor()
         }
-        toolbarView.onBorderToggle = { [weak canvasView] isOn in
-            canvasView?.showsBorder = isOn
+        toolbarView.onBorderToggle = { [weak self] isOn in
+            self?.showsBorder = isOn
         }
         toolbarView.onUndo = { [weak canvasView] in canvasView?.undo() }
         toolbarView.onRedo = { [weak canvasView] in canvasView?.redo() }
@@ -116,9 +118,57 @@ private extension SnipAnnotationWindowController {
     }
 
     func finish(_ action: FinishAction) {
-        let image = action == .cancel ? nil : canvasView.flattenedImage()
+        let image = action == .cancel ? nil : addBorderIfNeeded(to: canvasView.flattenedImage())
         window?.close()
         onFinish?(action, image)
+    }
+
+    // The border is composited only into the exported (copy/save) image, added entirely
+    // *outside* the original pixels - the live edit canvas never previews it - so it can
+    // never cover any of the actual screenshot content, and toggling it can't desync
+    // already-drawn shape coordinates from the image.
+    func addBorderIfNeeded(to image: NSImage) -> NSImage {
+        guard showsBorder else { return image }
+        let margin = Self.borderWidth
+        let newSize = NSSize(width: image.size.width + margin * 2, height: image.size.height + margin * 2)
+        let color: NSColor = Self.isDark(image) ? .white : .black
+
+        let result = NSImage(size: newSize)
+        result.lockFocus()
+        image.draw(in: NSRect(x: margin, y: margin, width: image.size.width, height: image.size.height))
+        let path = NSBezierPath(rect: NSRect(origin: .zero, size: newSize).insetBy(dx: margin / 2, dy: margin / 2))
+        path.lineWidth = Self.borderWidth
+        color.withAlphaComponent(0.85).setStroke()
+        path.stroke()
+        result.unlockFocus()
+        return result
+    }
+
+    static func isDark(_ image: NSImage) -> Bool {
+        let sampleSize = 16
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil),
+              let colorSpace = CGColorSpace(name: CGColorSpace.sRGB),
+              let context = CGContext(
+                data: nil,
+                width: sampleSize,
+                height: sampleSize,
+                bitsPerComponent: 8,
+                bytesPerRow: sampleSize * 4,
+                space: colorSpace,
+                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+              ),
+              let data = context.data else { return false }
+        context.draw(cgImage, in: CGRect(x: 0, y: 0, width: sampleSize, height: sampleSize))
+
+        let buffer = data.bindMemory(to: UInt8.self, capacity: sampleSize * sampleSize * 4)
+        var totalLuminance: CGFloat = 0
+        for pixel in 0..<(sampleSize * sampleSize) {
+            let red = CGFloat(buffer[pixel * 4]) / 255
+            let green = CGFloat(buffer[pixel * 4 + 1]) / 255
+            let blue = CGFloat(buffer[pixel * 4 + 2]) / 255
+            totalLuminance += 0.299 * red + 0.587 * green + 0.114 * blue
+        }
+        return (totalLuminance / CGFloat(sampleSize * sampleSize)) < 0.5
     }
 }
 

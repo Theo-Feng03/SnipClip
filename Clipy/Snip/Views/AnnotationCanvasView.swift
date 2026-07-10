@@ -16,9 +16,6 @@ final class AnnotationCanvasView: NSView {
     var currentTool: SnipTool = .none
     var currentColor: NSColor = .systemRed
     var currentLineWidth: CGFloat = 3
-    var showsBorder = false {
-        didSet { needsDisplay = true }
-    }
 
     private let baseImage: NSImage
     private var shapes: [SnipShape] = []
@@ -26,7 +23,6 @@ final class AnnotationCanvasView: NSView {
     private var dragStart: NSPoint?
     private var activeTextEditor: NSTextField?
     private let history = UndoManager()
-    private lazy var autoBorderColor: NSColor = Self.isDark(baseImage) ? .white : .black
 
     init(baseImage: NSImage) {
         self.baseImage = baseImage
@@ -55,7 +51,6 @@ final class AnnotationCanvasView: NSView {
         image.lockFocus()
         baseImage.draw(in: NSRect(origin: .zero, size: baseImage.size))
         shapes.forEach { $0.draw(baseImage: baseImage) }
-        drawBorder(in: NSRect(origin: .zero, size: baseImage.size))
         image.unlockFocus()
         return image
     }
@@ -64,7 +59,6 @@ final class AnnotationCanvasView: NSView {
         baseImage.draw(in: bounds)
         shapes.forEach { $0.draw(baseImage: baseImage) }
         inProgressShape?.draw(baseImage: baseImage)
-        drawBorder(in: bounds)
     }
 
     override func mouseDown(with event: NSEvent) {
@@ -124,8 +118,6 @@ final class AnnotationCanvasView: NSView {
 }
 
 private extension AnnotationCanvasView {
-    static let borderWidth: CGFloat = 1.5
-
     var nextStepNumber: Int {
         shapes.reduce(1) { count, shape in
             if case .stepMarker = shape.kind { return count + 1 }
@@ -146,42 +138,6 @@ private extension AnnotationCanvasView {
         case .text, .stepMarker:
             return true
         }
-    }
-
-    func drawBorder(in rect: NSRect) {
-        guard showsBorder else { return }
-        let inset = Self.borderWidth / 2
-        let path = NSBezierPath(rect: rect.insetBy(dx: inset, dy: inset))
-        path.lineWidth = Self.borderWidth
-        autoBorderColor.withAlphaComponent(0.75).setStroke()
-        path.stroke()
-    }
-
-    static func isDark(_ image: NSImage) -> Bool {
-        let sampleSize = 16
-        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil),
-              let colorSpace = CGColorSpace(name: CGColorSpace.sRGB),
-              let context = CGContext(
-                data: nil,
-                width: sampleSize,
-                height: sampleSize,
-                bitsPerComponent: 8,
-                bytesPerRow: sampleSize * 4,
-                space: colorSpace,
-                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
-              ),
-              let data = context.data else { return false }
-        context.draw(cgImage, in: CGRect(x: 0, y: 0, width: sampleSize, height: sampleSize))
-
-        let buffer = data.bindMemory(to: UInt8.self, capacity: sampleSize * sampleSize * 4)
-        var totalLuminance: CGFloat = 0
-        for pixel in 0..<(sampleSize * sampleSize) {
-            let red = CGFloat(buffer[pixel * 4]) / 255
-            let green = CGFloat(buffer[pixel * 4 + 1]) / 255
-            let blue = CGFloat(buffer[pixel * 4 + 2]) / 255
-            totalLuminance += 0.299 * red + 0.587 * green + 0.114 * blue
-        }
-        return (totalLuminance / CGFloat(sampleSize * sampleSize)) < 0.5
     }
 
     func shapeForDrag(from start: NSPoint, to end: NSPoint) -> SnipShape {

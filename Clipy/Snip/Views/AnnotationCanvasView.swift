@@ -70,7 +70,7 @@ final class AnnotationCanvasView: NSView {
     override func mouseDown(with event: NSEvent) {
         window?.makeFirstResponder(self)
         guard currentTool != .none else { return }
-        let point = convert(event.locationInWindow, from: nil)
+        let point = clampedPoint(convert(event.locationInWindow, from: nil))
 
         switch currentTool {
         case .text:
@@ -84,7 +84,10 @@ final class AnnotationCanvasView: NSView {
 
     override func mouseDragged(with event: NSEvent) {
         guard let start = dragStart else { return }
-        let point = convert(event.locationInWindow, from: nil)
+        // The view that receives mouseDown keeps receiving mouseDragged/mouseUp for the whole
+        // gesture even once the cursor leaves this view's bounds (or the window entirely), so
+        // the drag endpoint is otherwise unconstrained - clamp it to the image's true edges.
+        let point = clampedPoint(convert(event.locationInWindow, from: nil))
         inProgressShape = shapeForDrag(from: start, to: point)
         needsDisplay = true
     }
@@ -128,6 +131,10 @@ private extension AnnotationCanvasView {
             if case .stepMarker = shape.kind { return count + 1 }
             return count
         }
+    }
+
+    func clampedPoint(_ point: NSPoint) -> NSPoint {
+        NSPoint(x: min(max(point.x, 0), bounds.width), y: min(max(point.y, 0), bounds.height))
     }
 
     func isSignificant(_ shape: SnipShape) -> Bool {

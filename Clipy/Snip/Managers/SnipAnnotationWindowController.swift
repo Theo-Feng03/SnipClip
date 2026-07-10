@@ -34,9 +34,9 @@ final class SnipAnnotationWindowController: NSWindowController {
         )
         window.isMovableByWindowBackground = true
         window.level = .floating
-        window.isOpaque = true
-        window.backgroundColor = .windowBackgroundColor
-        window.hasShadow = true
+        window.isOpaque = false
+        window.backgroundColor = .clear
+        window.hasShadow = false
         window.isReleasedWhenClosed = false
 
         super.init(window: window)

@@ -19,12 +19,13 @@ final class SnipAnnotationWindowController: NSWindowController {
     private let toolbarView = AnnotationToolbarView(frame: .zero)
 
     private static let toolbarHeight: CGFloat = 44
+    private static let minimumToolbarWidth: CGFloat = 420
 
     init(image: NSImage, screenPoint: NSPoint) {
         let canvas = AnnotationCanvasView(baseImage: image)
         self.canvasView = canvas
 
-        let contentSize = NSSize(width: max(image.size.width, 360), height: image.size.height + Self.toolbarHeight)
+        let contentSize = NSSize(width: max(image.size.width, Self.minimumToolbarWidth), height: image.size.height + Self.toolbarHeight)
         let window = SnipBorderlessWindow(
             contentRect: NSRect(origin: screenPoint, size: contentSize),
             styleMask: [.borderless],
@@ -47,8 +48,10 @@ final class SnipAnnotationWindowController: NSWindowController {
         let container = NSView(frame: NSRect(origin: .zero, size: contentSize))
         toolbarView.frame = NSRect(x: 0, y: contentSize.height - Self.toolbarHeight, width: contentSize.width, height: Self.toolbarHeight)
         toolbarView.autoresizingMask = [.width, .minYMargin]
-        canvas.frame = NSRect(x: 0, y: 0, width: contentSize.width, height: image.size.height)
-        canvas.autoresizingMask = [.width, .height]
+        // Keep the canvas at the image's true size (set by AnnotationCanvasView's own init) so
+        // drawn shape coordinates line up 1:1 with flattenedImage() - only center it horizontally
+        // when the window is widened to fit the toolbar's minimum width.
+        canvas.setFrameOrigin(NSPoint(x: (contentSize.width - image.size.width) / 2, y: 0))
         container.addSubview(canvas)
         container.addSubview(toolbarView)
         window.contentView = container

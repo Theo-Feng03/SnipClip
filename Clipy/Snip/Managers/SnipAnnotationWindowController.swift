@@ -99,6 +99,13 @@ private extension SnipAnnotationWindowController {
         toolbarView.onSave = { [weak self] in self?.finish(.save) }
         toolbarView.onCopy = { [weak self] in self?.finish(.copy) }
         canvasView.onEscape = { [weak self] in self?.finish(.cancel) }
+        canvasView.onToggleToolbar = { [weak self] in self?.toggleToolbar() }
+    }
+
+    func toggleToolbar() {
+        let isHidden = !toolbarView.isHidden
+        toolbarView.isHidden = isHidden
+        canvasView.setFrameOrigin(NSPoint(x: canvasView.frame.origin.x, y: isHidden ? 0 : Self.toolbarHeight))
     }
 
     func pickColor() {

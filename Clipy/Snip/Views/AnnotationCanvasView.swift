@@ -43,6 +43,7 @@ final class AnnotationCanvasView: NSView {
     override var mouseDownCanMoveWindow: Bool { false }
 
     var onEscape: (() -> Void)?
+    var onToggleToolbar: (() -> Void)?
 
     var canUndo: Bool { history.canUndo }
     var canRedo: Bool { history.canRedo }
@@ -100,6 +101,10 @@ final class AnnotationCanvasView: NSView {
         addShape(shape)
     }
 
+    override func rightMouseDown(with event: NSEvent) {
+        onToggleToolbar?()
+    }
+
     override func keyDown(with event: NSEvent) {
         if event.keyCode == 53 {
             onEscape?()
@@ -118,6 +123,8 @@ final class AnnotationCanvasView: NSView {
 }
 
 private extension AnnotationCanvasView {
+    static let borderWidth: CGFloat = 1.5
+
     func isSignificant(_ shape: SnipShape) -> Bool {
         switch shape.kind {
         case .rectangle(let rect), .ellipse(let rect), .mosaic(let rect):
@@ -131,10 +138,10 @@ private extension AnnotationCanvasView {
 
     func drawBorder(in rect: NSRect) {
         guard showsBorder else { return }
-        let inset = currentLineWidth / 2
+        let inset = Self.borderWidth / 2
         let path = NSBezierPath(rect: rect.insetBy(dx: inset, dy: inset))
-        path.lineWidth = currentLineWidth
-        autoBorderColor.setStroke()
+        path.lineWidth = Self.borderWidth
+        autoBorderColor.withAlphaComponent(0.75).setStroke()
         path.stroke()
     }
 

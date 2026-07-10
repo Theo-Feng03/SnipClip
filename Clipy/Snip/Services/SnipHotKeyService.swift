@@ -18,7 +18,7 @@ final class SnipHotKeyService {
     var onTrigger: (() -> Void)?
 
     func setup() {
-        let combo = savedKeyCombo() ?? KeyCombo(key: .a, cocoaModifiers: [.command, .shift])
+        let combo = savedKeyCombo() ?? KeyCombo(key: .f1, cocoaModifiers: [])
         change(to: combo)
     }
 

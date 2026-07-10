@@ -24,6 +24,7 @@ class AppDelegate: NSObject, NSMenuItemValidation {
     // MARK: - Properties
     private(set) var updaterController: SPUStandardUpdaterController?
     private let screenshotObserver = ScreenShotObserver()
+    private let snipManager = SnipManager()
     private let disposeBag = DisposeBag()
     private let historyPruningScheduler = SerialDispatchQueueScheduler(qos: .utility)
 
@@ -170,6 +171,8 @@ extension AppDelegate: NSApplicationDelegate {
         AppEnvironment.current.menuManager.setup()
         // Screenshot
         screenshotObserver.delegate = self
+        // Snip
+        snipManager.setup()
 
         // Clean histories every 30 minutes
         Observable<Int>.interval(.seconds(60 * 30), scheduler: historyPruningScheduler)

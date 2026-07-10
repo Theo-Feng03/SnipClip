@@ -295,6 +295,11 @@
 			path = GoogleService;
 			sourceTree = "<group>";
 		};
+		E67D37C3B2006C96605BCF9A /* Snip */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Snip;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -693,6 +698,7 @@
 				FA1DB49C1DDCB3FB007F95C8 /* Sources */,
 				FA1DB4911DDCB205007F95C8 /* Supporting Files */,
 				C57447452FD142D0000D64D3 /* GoogleService */,
+				E67D37C3B2006C96605BCF9A /* Snip */,
 			);
 			path = Clipy;
 			sourceTree = "<group>";
@@ -738,6 +744,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				C57447452FD142D0000D64D3 /* GoogleService */,
+				E67D37C3B2006C96605BCF9A /* Snip */,
 			);
 			name = Clipy;
 			packageProductDependencies = (

@@ -16,12 +16,14 @@ final class AnnotationCanvasView: NSView {
     var currentTool: SnipTool = .none
     var currentColor: NSColor = .systemRed
     var currentLineWidth: CGFloat = 3
+    var showsBorder = false {
+        didSet { needsDisplay = true }
+    }
 
     private let baseImage: NSImage
     private var shapes: [SnipShape] = []
     private var inProgressShape: SnipShape?
     private var dragStart: NSPoint?
-    private var penPoints: [NSPoint] = []
     private var stepCounter = 0
     private var activeTextEditor: NSTextField?
     private let history = UndoManager()
@@ -52,6 +54,7 @@ final class AnnotationCanvasView: NSView {
         image.lockFocus()
         baseImage.draw(in: NSRect(origin: .zero, size: baseImage.size))
         shapes.forEach { $0.draw(baseImage: baseImage) }
+        drawBorder(in: NSRect(origin: .zero, size: baseImage.size))
         image.unlockFocus()
         return image
     }
@@ -60,6 +63,7 @@ final class AnnotationCanvasView: NSView {
         baseImage.draw(in: bounds)
         shapes.forEach { $0.draw(baseImage: baseImage) }
         inProgressShape?.draw(baseImage: baseImage)
+        drawBorder(in: bounds)
     }
 
     override func mouseDown(with event: NSEvent) {
@@ -73,9 +77,6 @@ final class AnnotationCanvasView: NSView {
         case .stepMarker:
             stepCounter += 1
             addShape(SnipShape(kind: .stepMarker(number: stepCounter, center: point), color: currentColor, lineWidth: currentLineWidth))
-        case .pen:
-            penPoints = [point]
-            dragStart = point
         default:
             dragStart = point
         }
@@ -84,12 +85,7 @@ final class AnnotationCanvasView: NSView {
     override func mouseDragged(with event: NSEvent) {
         guard let start = dragStart else { return }
         let point = convert(event.locationInWindow, from: nil)
-        if currentTool == .pen {
-            penPoints.append(point)
-            inProgressShape = SnipShape(kind: .pen(penPoints), color: currentColor, lineWidth: currentLineWidth)
-        } else {
-            inProgressShape = shapeForDrag(from: start, to: point)
-        }
+        inProgressShape = shapeForDrag(from: start, to: point)
         needsDisplay = true
     }
 
@@ -97,7 +93,6 @@ final class AnnotationCanvasView: NSView {
         defer {
             inProgressShape = nil
             dragStart = nil
-            penPoints = []
             needsDisplay = true
         }
         guard let shape = inProgressShape, isSignificant(shape) else { return }
@@ -128,11 +123,18 @@ private extension AnnotationCanvasView {
             return rect.width >= 2 && rect.height >= 2
         case .arrow(let from, let to), .line(let from, let to):
             return hypot(to.x - from.x, to.y - from.y) >= 2
-        case .pen(let points):
-            return points.count >= 2
         case .text, .stepMarker:
             return true
         }
+    }
+
+    func drawBorder(in rect: NSRect) {
+        guard showsBorder else { return }
+        let inset = currentLineWidth / 2
+        let path = NSBezierPath(rect: rect.insetBy(dx: inset, dy: inset))
+        path.lineWidth = currentLineWidth
+        currentColor.setStroke()
+        path.stroke()
     }
 
     func shapeForDrag(from start: NSPoint, to end: NSPoint) -> SnipShape {

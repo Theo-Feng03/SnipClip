@@ -11,6 +11,7 @@ final class AnnotationToolbarView: NSView {
     var onColorChange: ((NSColor) -> Void)?
     var onLineWidthChange: ((CGFloat) -> Void)?
     var onEyedropper: (() -> Void)?
+    var onBorderToggle: ((Bool) -> Void)?
     var onUndo: (() -> Void)?
     var onRedo: (() -> Void)?
     var onCopy: (() -> Void)?
@@ -19,6 +20,7 @@ final class AnnotationToolbarView: NSView {
 
     private let undoButton = NSButton()
     private let redoButton = NSButton()
+    private let borderButton = NSButton()
     private let colorWell = NSColorWell()
     private let widthControl = NSSegmentedControl(labels: ["S", "M", "L"], trackingMode: .selectOne, target: nil, action: nil)
     private static let lineWidths: [CGFloat] = [2, 4, 8]
@@ -50,7 +52,6 @@ private extension AnnotationToolbarView {
         ToolItem(tool: .ellipse, symbol: "circle", accessibilityDescription: "Ellipse"),
         ToolItem(tool: .arrow, symbol: "arrow.up.right", accessibilityDescription: "Arrow"),
         ToolItem(tool: .line, symbol: "line.diagonal", accessibilityDescription: "Line"),
-        ToolItem(tool: .pen, symbol: "pencil.tip", accessibilityDescription: "Pen"),
         ToolItem(tool: .text, symbol: "textformat", accessibilityDescription: "Text"),
         ToolItem(tool: .stepMarker, symbol: "1.circle", accessibilityDescription: "Step Marker"),
         ToolItem(tool: .mosaic, symbol: "square.grid.3x3.fill", accessibilityDescription: "Mosaic")
@@ -62,28 +63,38 @@ private extension AnnotationToolbarView {
 
         let toolStack = NSStackView(views: Self.toolItems.enumerated().map { makeToolButton(index: $0.offset, item: $0.element) })
         toolStack.orientation = .horizontal
-        toolStack.spacing = 4
+        toolStack.spacing = 2
 
         let eyedropperButton = makeIconButton(symbol: "eyedropper", accessibilityDescription: "Eyedropper", action: #selector(eyedropperTapped))
+
+        borderButton.image = NSImage(systemSymbolName: "square.dashed", accessibilityDescription: "Border")
+        borderButton.bezelStyle = .texturedRounded
+        borderButton.setButtonType(.pushOnPushOff)
+        borderButton.controlSize = .small
+        borderButton.target = self
+        borderButton.action = #selector(borderToggled)
 
         colorWell.color = .systemRed
         colorWell.target = self
         colorWell.action = #selector(colorChanged)
         colorWell.translatesAutoresizingMaskIntoConstraints = false
-        colorWell.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        colorWell.widthAnchor.constraint(equalToConstant: 24).isActive = true
 
         widthControl.selectedSegment = 1
+        widthControl.controlSize = .small
         widthControl.target = self
         widthControl.action = #selector(widthChanged)
 
         undoButton.image = NSImage(systemSymbolName: "arrow.uturn.backward", accessibilityDescription: "Undo")
         undoButton.bezelStyle = .texturedRounded
+        undoButton.controlSize = .small
         undoButton.target = self
         undoButton.action = #selector(undoTapped)
         undoButton.isEnabled = false
 
         redoButton.image = NSImage(systemSymbolName: "arrow.uturn.forward", accessibilityDescription: "Redo")
         redoButton.bezelStyle = .texturedRounded
+        redoButton.controlSize = .small
         redoButton.target = self
         redoButton.action = #selector(redoTapped)
         redoButton.isEnabled = false
@@ -92,21 +103,21 @@ private extension AnnotationToolbarView {
         let saveButton = makeIconButton(symbol: "square.and.arrow.down", accessibilityDescription: "Save", action: #selector(saveTapped))
         let copyButton = makeIconButton(symbol: "doc.on.doc", accessibilityDescription: "Copy", action: #selector(copyTapped))
 
-        let leftStack = NSStackView(views: [toolStack, eyedropperButton, colorWell, widthControl, undoButton, redoButton])
+        let leftStack = NSStackView(views: [toolStack, eyedropperButton, borderButton, colorWell, widthControl, undoButton, redoButton])
         leftStack.orientation = .horizontal
-        leftStack.spacing = 8
+        leftStack.spacing = 6
 
         let rightStack = NSStackView(views: [cancelButton, saveButton, copyButton])
         rightStack.orientation = .horizontal
-        rightStack.spacing = 8
+        rightStack.spacing = 4
 
         let spacer = NSView()
         spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
         let mainStack = NSStackView(views: [leftStack, spacer, rightStack])
         mainStack.orientation = .horizontal
-        mainStack.spacing = 12
-        mainStack.edgeInsets = NSEdgeInsets(top: 6, left: 8, bottom: 6, right: 8)
+        mainStack.spacing = 8
+        mainStack.edgeInsets = NSEdgeInsets(top: 3, left: 6, bottom: 3, right: 6)
         mainStack.translatesAutoresizingMaskIntoConstraints = false
         addSubview(mainStack)
         NSLayoutConstraint.activate([
@@ -127,6 +138,7 @@ private extension AnnotationToolbarView {
         let image = NSImage(systemSymbolName: symbol, accessibilityDescription: accessibilityDescription) ?? NSImage()
         let button = NSButton(image: image, target: self, action: action)
         button.bezelStyle = .texturedRounded
+        button.controlSize = .small
         button.imagePosition = .imageOnly
         return button
     }
@@ -149,6 +161,10 @@ private extension AnnotationToolbarView {
 
     @objc func eyedropperTapped() {
         onEyedropper?()
+    }
+
+    @objc func borderToggled() {
+        onBorderToggle?(borderButton.state == .on)
     }
 
     @objc func undoTapped() {

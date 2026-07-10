@@ -18,8 +18,8 @@ final class SnipAnnotationWindowController: NSWindowController {
     private let canvasView: AnnotationCanvasView
     private let toolbarView = AnnotationToolbarView(frame: .zero)
 
-    private static let toolbarHeight: CGFloat = 44
-    private static let minimumToolbarWidth: CGFloat = 420
+    private static let toolbarHeight: CGFloat = 30
+    private static let minimumToolbarWidth: CGFloat = 340
 
     init(image: NSImage, screenPoint: NSPoint) {
         let canvas = AnnotationCanvasView(baseImage: image)
@@ -46,12 +46,13 @@ final class SnipAnnotationWindowController: NSWindowController {
         canvas.currentColor = .systemRed
 
         let container = NSView(frame: NSRect(origin: .zero, size: contentSize))
-        toolbarView.frame = NSRect(x: 0, y: contentSize.height - Self.toolbarHeight, width: contentSize.width, height: Self.toolbarHeight)
-        toolbarView.autoresizingMask = [.width, .minYMargin]
-        // Keep the canvas at the image's true size (set by AnnotationCanvasView's own init) so
-        // drawn shape coordinates line up 1:1 with flattenedImage() - only center it horizontally
-        // when the window is widened to fit the toolbar's minimum width.
-        canvas.setFrameOrigin(NSPoint(x: (contentSize.width - image.size.width) / 2, y: 0))
+        // Toolbar sits below the image; canvas sits above it. Keep the canvas at the image's
+        // true size (set by AnnotationCanvasView's own init) so drawn shape coordinates line up
+        // 1:1 with flattenedImage() - only center it horizontally when the window is widened to
+        // fit the toolbar's minimum width.
+        toolbarView.frame = NSRect(x: 0, y: 0, width: contentSize.width, height: Self.toolbarHeight)
+        toolbarView.autoresizingMask = [.width, .maxYMargin]
+        canvas.setFrameOrigin(NSPoint(x: (contentSize.width - image.size.width) / 2, y: Self.toolbarHeight))
         container.addSubview(canvas)
         container.addSubview(toolbarView)
         window.contentView = container
@@ -82,6 +83,9 @@ private extension SnipAnnotationWindowController {
         }
         toolbarView.onEyedropper = { [weak self] in
             self?.pickColor()
+        }
+        toolbarView.onBorderToggle = { [weak canvasView] isOn in
+            canvasView?.showsBorder = isOn
         }
         toolbarView.onUndo = { [weak canvasView] in canvasView?.undo() }
         toolbarView.onRedo = { [weak canvasView] in canvasView?.redo() }

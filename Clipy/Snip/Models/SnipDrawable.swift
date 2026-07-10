@@ -12,7 +12,6 @@ enum SnipTool {
     case ellipse
     case arrow
     case line
-    case pen
     case text
     case stepMarker
     case mosaic
@@ -24,7 +23,6 @@ struct SnipShape {
         case ellipse(NSRect)
         case arrow(from: NSPoint, to: NSPoint)
         case line(from: NSPoint, to: NSPoint)
-        case pen([NSPoint])
         case text(String, origin: NSPoint)
         case stepMarker(number: Int, center: NSPoint)
         case mosaic(NSRect)
@@ -56,16 +54,6 @@ extension SnipShape {
             path.line(to: to)
             path.lineWidth = lineWidth
             path.lineCapStyle = .round
-            color.setStroke()
-            path.stroke()
-        case .pen(let points):
-            guard let first = points.first else { return }
-            let path = NSBezierPath()
-            path.move(to: first)
-            points.dropFirst().forEach { path.line(to: $0) }
-            path.lineWidth = lineWidth
-            path.lineCapStyle = .round
-            path.lineJoinStyle = .round
             color.setStroke()
             path.stroke()
         case .text(let string, let origin):

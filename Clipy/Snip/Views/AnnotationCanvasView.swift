@@ -24,7 +24,6 @@ final class AnnotationCanvasView: NSView {
     private var shapes: [SnipShape] = []
     private var inProgressShape: SnipShape?
     private var dragStart: NSPoint?
-    private var stepCounter = 0
     private var activeTextEditor: NSTextField?
     private let history = UndoManager()
     private lazy var autoBorderColor: NSColor = Self.isDark(baseImage) ? .white : .black
@@ -77,8 +76,7 @@ final class AnnotationCanvasView: NSView {
         case .text:
             beginTextEditing(at: point)
         case .stepMarker:
-            stepCounter += 1
-            addShape(SnipShape(kind: .stepMarker(number: stepCounter, center: point), color: currentColor, lineWidth: currentLineWidth))
+            addShape(SnipShape(kind: .stepMarker(number: nextStepNumber, center: point), color: currentColor, lineWidth: currentLineWidth))
         default:
             dragStart = point
         }
@@ -124,6 +122,13 @@ final class AnnotationCanvasView: NSView {
 
 private extension AnnotationCanvasView {
     static let borderWidth: CGFloat = 1.5
+
+    var nextStepNumber: Int {
+        shapes.reduce(1) { count, shape in
+            if case .stepMarker = shape.kind { return count + 1 }
+            return count
+        }
+    }
 
     func isSignificant(_ shape: SnipShape) -> Bool {
         switch shape.kind {

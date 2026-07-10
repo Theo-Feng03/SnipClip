@@ -37,6 +37,9 @@ final class AnnotationCanvasView: NSView {
 
     override var isFlipped: Bool { false }
     override var acceptsFirstResponder: Bool { true }
+    override var mouseDownCanMoveWindow: Bool { false }
+
+    var onEscape: (() -> Void)?
 
     var canUndo: Bool { history.canUndo }
     var canRedo: Bool { history.canRedo }
@@ -102,6 +105,10 @@ final class AnnotationCanvasView: NSView {
     }
 
     override func keyDown(with event: NSEvent) {
+        if event.keyCode == 53 {
+            onEscape?()
+            return
+        }
         guard event.modifierFlags.contains(.command), event.charactersIgnoringModifiers?.lowercased() == "z" else {
             super.keyDown(with: event)
             return

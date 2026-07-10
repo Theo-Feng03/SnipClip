@@ -25,16 +25,17 @@ final class SnipAnnotationWindowController: NSWindowController {
         self.canvasView = canvas
 
         let contentSize = NSSize(width: max(image.size.width, 360), height: image.size.height + Self.toolbarHeight)
-        let window = NSWindow(
+        let window = SnipBorderlessWindow(
             contentRect: NSRect(origin: screenPoint, size: contentSize),
-            styleMask: [.titled, .closable, .fullSizeContentView],
+            styleMask: [.borderless],
             backing: .buffered,
             defer: false
         )
-        window.titleVisibility = .hidden
-        window.titlebarAppearsTransparent = true
         window.isMovableByWindowBackground = true
         window.level = .floating
+        window.isOpaque = true
+        window.backgroundColor = .windowBackgroundColor
+        window.hasShadow = true
         window.isReleasedWhenClosed = false
 
         super.init(window: window)
@@ -84,6 +85,7 @@ private extension SnipAnnotationWindowController {
         toolbarView.onCancel = { [weak self] in self?.finish(.cancel) }
         toolbarView.onSave = { [weak self] in self?.finish(.save) }
         toolbarView.onCopy = { [weak self] in self?.finish(.copy) }
+        canvasView.onEscape = { [weak self] in self?.finish(.cancel) }
     }
 
     func pickColor() {

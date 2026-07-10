@@ -17,11 +17,18 @@ final class SnipAnnotationWindowController: NSWindowController {
 
     private let canvasView: AnnotationCanvasView
     private let toolbarView: AnnotationToolbarView
-    private var showsBorder = false
+    private let borderFrameView = SnipBorderFrameView(frame: .zero)
+    private var showsBorder = false {
+        didSet { borderFrameView.isHidden = !showsBorder }
+    }
 
     private static let toolbarHeight: CGFloat = 30
     private static let reservedDragSpace: CGFloat = 60
     private static let borderWidth: CGFloat = 1.5
+    // Space reserved around the canvas purely for the border-preview ring; always laid out
+    // (whether or not the border is currently shown) so toggling it never has to resize the
+    // window or reposition already-drawn shapes.
+    private static let previewMargin: CGFloat = 8
 
     init(image: NSImage, screenPoint: NSPoint) {
         let canvas = AnnotationCanvasView(baseImage: image)
@@ -33,7 +40,8 @@ final class SnipAnnotationWindowController: NSWindowController {
         // strip to grab for isMovableByWindowBackground - reserve extra width on top of the
         // toolbar's natural fitting size so there's always a draggable gap.
         let minimumToolbarWidth = toolbar.fittingSize.width + Self.reservedDragSpace
-        let contentSize = NSSize(width: max(image.size.width, minimumToolbarWidth), height: image.size.height + Self.toolbarHeight)
+        let contentWidth = max(image.size.width + Self.previewMargin * 2, minimumToolbarWidth)
+        let contentSize = NSSize(width: contentWidth, height: image.size.height + Self.previewMargin * 2 + Self.toolbarHeight)
         let window = SnipBorderlessWindow(
             contentRect: NSRect(origin: screenPoint, size: contentSize),
             styleMask: [.borderless],
@@ -54,13 +62,18 @@ final class SnipAnnotationWindowController: NSWindowController {
         canvas.currentColor = .systemRed
 
         let container = NSView(frame: NSRect(origin: .zero, size: contentSize))
-        // Toolbar sits below the image; canvas sits above it. Keep the canvas at the image's
-        // true size (set by AnnotationCanvasView's own init) so drawn shape coordinates line up
-        // 1:1 with flattenedImage() - only center it horizontally when the window is widened to
-        // fit the toolbar's minimum width.
+        // Toolbar sits below the image; canvas sits above it, centered, with previewMargin of
+        // breathing room reserved on every side for the border-preview ring. Keep the canvas at
+        // the image's true size (set by AnnotationCanvasView's own init) so drawn shape
+        // coordinates line up 1:1 with flattenedImage().
         toolbarView.frame = NSRect(x: 0, y: 0, width: contentSize.width, height: Self.toolbarHeight)
         toolbarView.autoresizingMask = [.width, .maxYMargin]
-        canvas.setFrameOrigin(NSPoint(x: (contentSize.width - image.size.width) / 2, y: Self.toolbarHeight))
+        canvas.setFrameOrigin(NSPoint(x: (contentSize.width - image.size.width) / 2, y: Self.toolbarHeight + Self.previewMargin))
+        borderFrameView.color = Self.isDark(image) ? .white : .black
+        borderFrameView.strokeWidth = Self.borderWidth
+        borderFrameView.isHidden = true
+        updateBorderFrame()
+        container.addSubview(borderFrameView)
         container.addSubview(canvas)
         container.addSubview(toolbarView)
         window.contentView = container
@@ -107,7 +120,13 @@ private extension SnipAnnotationWindowController {
     func toggleToolbar() {
         let isHidden = !toolbarView.isHidden
         toolbarView.isHidden = isHidden
-        canvasView.setFrameOrigin(NSPoint(x: canvasView.frame.origin.x, y: isHidden ? 0 : Self.toolbarHeight))
+        let canvasY = isHidden ? Self.previewMargin : Self.toolbarHeight + Self.previewMargin
+        canvasView.setFrameOrigin(NSPoint(x: canvasView.frame.origin.x, y: canvasY))
+        updateBorderFrame()
+    }
+
+    func updateBorderFrame() {
+        borderFrameView.frame = canvasView.frame.insetBy(dx: -Self.previewMargin, dy: -Self.previewMargin)
     }
 
     func pickColor() {

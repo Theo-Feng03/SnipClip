@@ -5,10 +5,12 @@
 //
 
 import AppKit
+import UniformTypeIdentifiers
 
 final class SnipManager {
     private let hotKeyService = SnipHotKeyService()
     private var overlayWindows: [SnipCaptureOverlayWindow] = []
+    private var annotationWindowControllers: [SnipAnnotationWindowController] = []
 
     func setup() {
         hotKeyService.onTrigger = { [weak self] in
@@ -67,7 +69,11 @@ private extension SnipManager {
         guard let cropped = frameImage.cropping(to: pixelRect) else { return }
 
         let image = NSImage(cgImage: cropped, size: NSSize(width: pixelRect.width / scale, height: pixelRect.height / scale))
-        copyToClipboard(image)
+        let globalOrigin = NSPoint(
+            x: screen.frame.origin.x + selection.origin.x,
+            y: screen.frame.origin.y + (screen.frame.height - selection.origin.y - selection.height)
+        )
+        presentAnnotationEditor(image: image, origin: globalOrigin)
     }
 
     func closeOverlays() {
@@ -75,10 +81,44 @@ private extension SnipManager {
         overlayWindows.removeAll()
     }
 
+    func presentAnnotationEditor(image: NSImage, origin: NSPoint) {
+        let controller = SnipAnnotationWindowController(image: image, screenPoint: origin)
+        annotationWindowControllers.append(controller)
+        controller.onFinish = { [weak self, weak controller] action, resultImage in
+            guard let self else { return }
+            if let controller {
+                self.annotationWindowControllers.removeAll { $0 === controller }
+            }
+            switch action {
+            case .copy:
+                if let resultImage { self.copyToClipboard(resultImage) }
+            case .save:
+                if let resultImage { self.saveToDisk(resultImage) }
+            case .cancel:
+                break
+            }
+        }
+        controller.showWindow(nil)
+        controller.window?.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
     func copyToClipboard(_ image: NSImage) {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         pasteboard.writeObjects([image])
+    }
+
+    func saveToDisk(_ image: NSImage) {
+        let panel = NSSavePanel()
+        panel.allowedContentTypes = [.png]
+        panel.nameFieldStringValue = "Snip \(Self.timestampFormatter.string(from: Date()))"
+        NSApp.activate(ignoringOtherApps: true)
+        guard panel.runModal() == .OK, let url = panel.url,
+              let tiff = image.tiffRepresentation,
+              let bitmap = NSBitmapImageRep(data: tiff),
+              let data = bitmap.representation(using: .png, properties: [:]) else { return }
+        try? data.write(to: url)
     }
 
     func showPermissionAlert() {
@@ -92,4 +132,10 @@ private extension SnipManager {
         guard let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture") else { return }
         NSWorkspace.shared.open(url)
     }
+
+    static let timestampFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH.mm.ss"
+        return formatter
+    }()
 }

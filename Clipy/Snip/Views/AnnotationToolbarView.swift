@@ -1,0 +1,173 @@
+//
+//  AnnotationToolbarView.swift
+//
+//  Clipy
+//
+
+import AppKit
+
+final class AnnotationToolbarView: NSView {
+    var onSelectTool: ((SnipTool) -> Void)?
+    var onColorChange: ((NSColor) -> Void)?
+    var onLineWidthChange: ((CGFloat) -> Void)?
+    var onEyedropper: (() -> Void)?
+    var onUndo: (() -> Void)?
+    var onRedo: (() -> Void)?
+    var onCopy: (() -> Void)?
+    var onSave: (() -> Void)?
+    var onCancel: (() -> Void)?
+
+    private let undoButton = NSButton()
+    private let redoButton = NSButton()
+    private let colorWell = NSColorWell()
+    private let widthControl = NSSegmentedControl(labels: ["S", "M", "L"], trackingMode: .selectOne, target: nil, action: nil)
+    private static let lineWidths: [CGFloat] = [2, 4, 8]
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        build()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func setUndoRedoEnabled(canUndo: Bool, canRedo: Bool) {
+        undoButton.isEnabled = canUndo
+        redoButton.isEnabled = canRedo
+    }
+}
+
+private extension AnnotationToolbarView {
+    struct ToolItem {
+        let tool: SnipTool
+        let symbol: String
+        let accessibilityDescription: String
+    }
+
+    static let toolItems: [ToolItem] = [
+        ToolItem(tool: .rectangle, symbol: "rectangle", accessibilityDescription: "Rectangle"),
+        ToolItem(tool: .ellipse, symbol: "circle", accessibilityDescription: "Ellipse"),
+        ToolItem(tool: .arrow, symbol: "arrow.up.right", accessibilityDescription: "Arrow"),
+        ToolItem(tool: .line, symbol: "line.diagonal", accessibilityDescription: "Line"),
+        ToolItem(tool: .pen, symbol: "pencil.tip", accessibilityDescription: "Pen"),
+        ToolItem(tool: .text, symbol: "textformat", accessibilityDescription: "Text"),
+        ToolItem(tool: .stepMarker, symbol: "1.circle", accessibilityDescription: "Step Marker"),
+        ToolItem(tool: .mosaic, symbol: "square.grid.3x3.fill", accessibilityDescription: "Mosaic")
+    ]
+
+    func build() {
+        wantsLayer = true
+        layer?.backgroundColor = NSColor.windowBackgroundColor.cgColor
+
+        let toolStack = NSStackView(views: Self.toolItems.enumerated().map { makeToolButton(index: $0.offset, item: $0.element) })
+        toolStack.orientation = .horizontal
+        toolStack.spacing = 4
+
+        let eyedropperButton = makeIconButton(symbol: "eyedropper", accessibilityDescription: "Eyedropper", action: #selector(eyedropperTapped))
+
+        colorWell.color = .systemRed
+        colorWell.target = self
+        colorWell.action = #selector(colorChanged)
+        colorWell.translatesAutoresizingMaskIntoConstraints = false
+        colorWell.widthAnchor.constraint(equalToConstant: 32).isActive = true
+
+        widthControl.selectedSegment = 1
+        widthControl.target = self
+        widthControl.action = #selector(widthChanged)
+
+        undoButton.image = NSImage(systemSymbolName: "arrow.uturn.backward", accessibilityDescription: "Undo")
+        undoButton.bezelStyle = .texturedRounded
+        undoButton.target = self
+        undoButton.action = #selector(undoTapped)
+        undoButton.isEnabled = false
+
+        redoButton.image = NSImage(systemSymbolName: "arrow.uturn.forward", accessibilityDescription: "Redo")
+        redoButton.bezelStyle = .texturedRounded
+        redoButton.target = self
+        redoButton.action = #selector(redoTapped)
+        redoButton.isEnabled = false
+
+        let cancelButton = makeIconButton(symbol: "xmark", accessibilityDescription: "Cancel", action: #selector(cancelTapped))
+        let saveButton = makeIconButton(symbol: "square.and.arrow.down", accessibilityDescription: "Save", action: #selector(saveTapped))
+        let copyButton = makeIconButton(symbol: "doc.on.doc", accessibilityDescription: "Copy", action: #selector(copyTapped))
+
+        let leftStack = NSStackView(views: [toolStack, eyedropperButton, colorWell, widthControl, undoButton, redoButton])
+        leftStack.orientation = .horizontal
+        leftStack.spacing = 8
+
+        let rightStack = NSStackView(views: [cancelButton, saveButton, copyButton])
+        rightStack.orientation = .horizontal
+        rightStack.spacing = 8
+
+        let spacer = NSView()
+        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+
+        let mainStack = NSStackView(views: [leftStack, spacer, rightStack])
+        mainStack.orientation = .horizontal
+        mainStack.spacing = 12
+        mainStack.edgeInsets = NSEdgeInsets(top: 6, left: 8, bottom: 6, right: 8)
+        mainStack.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(mainStack)
+        NSLayoutConstraint.activate([
+            mainStack.leadingAnchor.constraint(equalTo: leadingAnchor),
+            mainStack.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainStack.topAnchor.constraint(equalTo: topAnchor),
+            mainStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+    }
+
+    func makeToolButton(index: Int, item: ToolItem) -> NSButton {
+        let button = makeIconButton(symbol: item.symbol, accessibilityDescription: item.accessibilityDescription, action: #selector(toolTapped(_:)))
+        button.tag = index
+        return button
+    }
+
+    func makeIconButton(symbol: String, accessibilityDescription: String, action: Selector) -> NSButton {
+        let image = NSImage(systemSymbolName: symbol, accessibilityDescription: accessibilityDescription) ?? NSImage()
+        let button = NSButton(image: image, target: self, action: action)
+        button.bezelStyle = .texturedRounded
+        button.imagePosition = .imageOnly
+        return button
+    }
+}
+
+private extension AnnotationToolbarView {
+    @objc func toolTapped(_ sender: NSButton) {
+        guard Self.toolItems.indices.contains(sender.tag) else { return }
+        onSelectTool?(Self.toolItems[sender.tag].tool)
+    }
+
+    @objc func colorChanged() {
+        onColorChange?(colorWell.color)
+    }
+
+    @objc func widthChanged() {
+        let index = min(max(widthControl.selectedSegment, 0), Self.lineWidths.count - 1)
+        onLineWidthChange?(Self.lineWidths[index])
+    }
+
+    @objc func eyedropperTapped() {
+        onEyedropper?()
+    }
+
+    @objc func undoTapped() {
+        onUndo?()
+    }
+
+    @objc func redoTapped() {
+        onRedo?()
+    }
+
+    @objc func cancelTapped() {
+        onCancel?()
+    }
+
+    @objc func saveTapped() {
+        onSave?()
+    }
+
+    @objc func copyTapped() {
+        onCopy?()
+    }
+}

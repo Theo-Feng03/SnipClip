@@ -34,8 +34,6 @@ final class HotKeyService: NSObject {
 
     @Dependency(\.snippetRepository)
     private var snippetRepository
-    @Dependency(\.firebase)
-    private var firebase
     @Dependency(\.defaultAppStorage)
     private var appStorage
 }
@@ -44,17 +42,14 @@ final class HotKeyService: NSObject {
 extension HotKeyService {
     @objc func popupMainMenu() {
         AppEnvironment.current.menuManager.popUpMenu(.main)
-        firebase.logEvent(event: .popUpMenu(.main))
     }
 
     @objc func popupHistoryMenu() {
         AppEnvironment.current.menuManager.popUpMenu(.history)
-        firebase.logEvent(event: .popUpMenu(.history))
     }
 
     @objc func popUpSnippetMenu() {
         AppEnvironment.current.menuManager.popUpMenu(.snippet)
-        firebase.logEvent(event: .popUpMenu(.snippet))
     }
 
     @objc func popUpClearHistoryAlert() {
@@ -222,7 +217,6 @@ extension HotKeyService {
         }
         guard folderDetail.folder.isEnabled else { return }
         AppEnvironment.current.menuManager.popUpSnippetFolder(folderDetail)
-        firebase.logEvent(event: .popUpSnippetFolderMenu)
     }
 
     fileprivate func setupSnippetHotKeys() {

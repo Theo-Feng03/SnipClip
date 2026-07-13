@@ -65,7 +65,6 @@ struct Constants {
         static let copySameHistory = "kCPYPrefCopySameHistroy"
         static let suppressAlertForDeleteSnippet = "kCPYSuppressAlertForDeleteSnippet"
         static let excludeApplications = "kCPYExcludeApplications"
-        static let collectCrashReport = "kCPYCollectCrashReport"
         static let showColorPreviewInTheMenu = "kCPYPrefShowColorPreviewInTheMenu"
         static let ignoreConcealedPasteboardType = "kCPYPrefIgnoreConcealedPasteboardType"
     }
@@ -78,11 +77,6 @@ struct Constants {
         static let pasteAndDeleteHistory = "kCPYBetaPasteAndDeleteHistory"
         static let pasteAndDeleteHistoryModifier = "kCPYBetapasteAndDeleteHistoryModifier"
         static let observerScreenshot = "kCPYBetaObserveScreenshot"
-    }
-
-    struct Update {
-        static let enableAutomaticCheck = "kCPYEnableAutomaticCheckKey"
-        static let checkInterval = "kCPYUpdateCheckIntervalKey"
     }
 
     struct Notification {
@@ -108,6 +102,13 @@ struct Constants {
         static let folderKeyCombos = "kCPYFolderKeyCombos"
         static let clearHistoryKeyCombo = "kCPYClearHistoryKeyCombo"
         static let snipKeyCombo = "kCPYHotKeySnipKeyCombo"
+    }
+
+    struct Snip {
+        static let defaultTool = "kCPYSnipDefaultTool"
+        static let defaultColor = "kCPYSnipDefaultColor"
+        static let defaultLineWidth = "kCPYSnipDefaultLineWidth"
+        static let defaultShowsBorder = "kCPYSnipDefaultShowsBorder"
     }
 
 }

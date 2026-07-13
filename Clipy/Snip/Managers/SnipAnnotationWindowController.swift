@@ -5,6 +5,7 @@
 //
 
 import AppKit
+import Dependencies
 
 final class SnipAnnotationWindowController: NSWindowController {
     enum FinishAction {
@@ -59,9 +60,17 @@ final class SnipAnnotationWindowController: NSWindowController {
 
         super.init(window: window)
 
+        @Dependency(\.defaultAppStorage) var appStorage
+        let defaultTool = SnipTool(rawValue: appStorage.string(forKey: Constants.Snip.defaultTool) ?? "") ?? .rectangle
+        let defaultColor = Self.savedColor(from: appStorage) ?? .systemRed
+        let defaultLineWidth = appStorage.object(forKey: Constants.Snip.defaultLineWidth) as? Double ?? 4
+        let defaultShowsBorder = appStorage.bool(forKey: Constants.Snip.defaultShowsBorder)
+
         canvas.delegate = self
-        canvas.currentTool = .rectangle
-        canvas.currentColor = .systemRed
+        canvas.currentTool = defaultTool
+        canvas.currentColor = defaultColor
+        canvas.currentLineWidth = CGFloat(defaultLineWidth)
+        toolbar.configureInitial(color: defaultColor, lineWidth: CGFloat(defaultLineWidth), borderOn: defaultShowsBorder)
 
         let container = NSView(frame: NSRect(origin: .zero, size: contentSize))
         // Toolbar sits below the image; canvas sits above it, centered, with previewMargin of
@@ -73,7 +82,6 @@ final class SnipAnnotationWindowController: NSWindowController {
         canvas.setFrameOrigin(NSPoint(x: (contentSize.width - image.size.width) / 2, y: Self.toolbarHeight + Self.previewMargin))
         borderFrameView.color = Self.isDark(image) ? .white : .black
         borderFrameView.strokeWidth = Self.borderWidth
-        borderFrameView.isHidden = true
         updateBorderFrame()
         container.addSubview(borderFrameView)
         container.addSubview(canvas)
@@ -81,6 +89,7 @@ final class SnipAnnotationWindowController: NSWindowController {
         window.contentView = container
 
         wireToolbar()
+        showsBorder = defaultShowsBorder
     }
 
     required init?(coder: NSCoder) {
@@ -163,6 +172,11 @@ private extension SnipAnnotationWindowController {
         path.stroke()
         result.unlockFocus()
         return result
+    }
+
+    static func savedColor(from appStorage: UserDefaults) -> NSColor? {
+        guard let data = appStorage.object(forKey: Constants.Snip.defaultColor) as? Data else { return nil }
+        return NSKeyedUnarchiver.unarchiveObject(with: data) as? NSColor
     }
 
     static func isDark(_ image: NSImage) -> Bool {

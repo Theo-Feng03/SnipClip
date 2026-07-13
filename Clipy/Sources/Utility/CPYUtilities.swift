@@ -47,7 +47,6 @@ final class CPYUtilities {
         defaultValues.updateValue(storeTypes, forKey: Constants.UserDefaults.storeTypes)
         defaultValues.updateValue(NSNumber(value: true), forKey: Constants.UserDefaults.inputPasteCommand)
         defaultValues.updateValue(NSNumber(value: true), forKey: Constants.UserDefaults.reorderClipsAfterPasting)
-        defaultValues.updateValue(NSNumber(value: true), forKey: Constants.UserDefaults.collectCrashReport)
 
         /* Menu */
         defaultValues.updateValue(NSNumber(value: 16), forKey: Constants.UserDefaults.menuIconSize)
@@ -70,10 +69,6 @@ final class CPYUtilities {
         defaultValues.updateValue(NSNumber(value: true), forKey: Constants.UserDefaults.showColorPreviewInTheMenu)
         defaultValues.updateValue(NSNumber(value: false), forKey: Constants.UserDefaults.ignoreConcealedPasteboardType)
 
-        /* Updates */
-        defaultValues.updateValue(NSNumber(value: true), forKey: Constants.Update.enableAutomaticCheck)
-        defaultValues.updateValue(NSNumber(value: 86400), forKey: Constants.Update.checkInterval)
-
         /* Beta */
         defaultValues.updateValue(NSNumber(value: true), forKey: Constants.Beta.pastePlainText)
         defaultValues.updateValue(NSNumber(value: 0), forKey: Constants.Beta.pastePlainTextModifier)
@@ -82,6 +77,10 @@ final class CPYUtilities {
         defaultValues.updateValue(NSNumber(value: false), forKey: Constants.Beta.pasteAndDeleteHistory)
         defaultValues.updateValue(NSNumber(value: 0), forKey: Constants.Beta.pasteAndDeleteHistoryModifier)
         defaultValues.updateValue(NSNumber(value: false), forKey: Constants.Beta.observerScreenshot)
+
+        /* Snip */
+        defaultValues.updateValue(NSNumber(value: false), forKey: Constants.Snip.defaultShowsBorder)
+        defaultValues.updateValue(NSNumber(value: 4), forKey: Constants.Snip.defaultLineWidth)
 
         defaults.register(defaults: defaultValues)
         defaults.synchronize()

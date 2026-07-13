@@ -17,14 +17,12 @@ import RxCocoa
 import RxSwift
 import Screeen
 import ServiceManagement
-import Sparkle
 
 class AppDelegate: NSObject, NSMenuItemValidation {
 
     // MARK: - Properties
-    private(set) var updaterController: SPUStandardUpdaterController?
     private let screenshotObserver = ScreenShotObserver()
-    private let snipManager = SnipManager()
+    let snipManager = SnipManager()
     private let disposeBag = DisposeBag()
     private let historyPruningScheduler = SerialDispatchQueueScheduler(qos: .utility)
 
@@ -34,8 +32,6 @@ class AppDelegate: NSObject, NSMenuItemValidation {
     private var pasteboardHistoryRepository
     @Dependency(\.snippetRepository)
     private var snippetRepository
-    @Dependency(\.firebase)
-    private var firebase
 
     // MARK: - NSMenuItem Validation
     func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
@@ -140,8 +136,6 @@ extension AppDelegate: NSApplicationDelegate {
 
         guard context != .test else { return }
 
-        // SDKs
-        firebase.configure()
         // Check Accessibility Permission
         Accessibility.isAccessibilityEnabled(isPrompt: true)
 
@@ -149,15 +143,6 @@ extension AppDelegate: NSApplicationDelegate {
         if !AppEnvironment.current.defaults.bool(forKey: Constants.UserDefaults.loginItem) && !AppEnvironment.current.defaults.bool(forKey: Constants.UserDefaults.suppressAlertForLoginItem) {
             promptToAddLoginItems()
         }
-
-        // Sparkle
-        self.updaterController = SPUStandardUpdaterController(
-            startingUpdater: AppEnvironment.current.defaults.bool(forKey: Constants.Update.enableAutomaticCheck),
-            updaterDelegate: nil,
-            userDriverDelegate: nil
-        )
-        updaterController?.updater.updateCheckInterval = TimeInterval(AppEnvironment.current.defaults.integer(forKey: Constants.Update.checkInterval))
-        updaterController?.updater.clearFeedURLFromUserDefaults()
 
         // Binding Events
         bind()

@@ -6,7 +6,7 @@
 
 import AppKit
 
-enum SnipTool {
+enum SnipTool: String, CaseIterable {
     case none
     case rectangle
     case ellipse
@@ -15,6 +15,19 @@ enum SnipTool {
     case text
     case stepMarker
     case mosaic
+
+    var displayName: String {
+        switch self {
+        case .none: return String(localized: "None")
+        case .rectangle: return String(localized: "Rectangle")
+        case .ellipse: return String(localized: "Ellipse")
+        case .arrow: return String(localized: "Arrow")
+        case .line: return String(localized: "Line")
+        case .text: return String(localized: "Text")
+        case .stepMarker: return String(localized: "Step Marker")
+        case .mosaic: return String(localized: "Mosaic")
+        }
+    }
 }
 
 struct SnipShape {

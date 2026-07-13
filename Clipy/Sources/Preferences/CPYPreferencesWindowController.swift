@@ -47,7 +47,7 @@ final class CPYPreferencesWindowController: NSWindowController {
                                   CPYTypePreferenceViewController(nibName: "CPYTypePreferenceViewController", bundle: nil),
                                   CPYExcludeAppPreferenceViewController(nibName: "CPYExcludeAppPreferenceViewController", bundle: nil),
                                   CPYShortcutsPreferenceViewController(nibName: "CPYShortcutsPreferenceViewController", bundle: nil),
-                                  CPYUpdatesPreferenceViewController(nibName: "CPYUpdatesPreferenceViewController", bundle: nil),
+                                  CPYSnipPreferenceViewController(),
                                   CPYBetaPreferenceViewController(nibName: "CPYBetaPreferenceViewController", bundle: nil)]
 
     // MARK: - Window Life Cycle
@@ -99,7 +99,9 @@ private extension CPYPreferencesWindowController {
         typeImageView.image = NSImage(resource: .prefType)
         excludeImageView.image = NSImage(resource: .prefExcluded)
         shortcutsImageView.image = NSImage(resource: .prefShortcut)
-        updatesImageView.image = NSImage(resource: .prefUpdate)
+        updatesImageView.image = NSImage(systemSymbolName: "camera.viewfinder", accessibilityDescription: nil)
+        updatesImageView.contentTintColor = NSColor(resource: .tabTitle)
+        updatesTextField.stringValue = String(localized: "Snip")
         betaImageView.image = NSImage(resource: .prefBeta)
 
         generalTextField.textColor = NSColor(resource: .tabTitle)
@@ -131,7 +133,7 @@ private extension CPYPreferencesWindowController {
             shortcutsImageView.image = NSImage(resource: .prefShortcutOn)
             shortcutsTextField.textColor = NSColor(resource: .clipy)
         case 5:
-            updatesImageView.image = NSImage(resource: .prefUpdateOn)
+            updatesImageView.contentTintColor = NSColor(resource: .clipy)
             updatesTextField.textColor = NSColor(resource: .clipy)
         case 6:
             betaImageView.image = NSImage(resource: .prefBetaOn)

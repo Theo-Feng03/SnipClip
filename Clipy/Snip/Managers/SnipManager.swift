@@ -5,6 +5,7 @@
 //
 
 import AppKit
+import Magnet
 import UniformTypeIdentifiers
 
 final class SnipManager {
@@ -12,11 +13,17 @@ final class SnipManager {
     private var overlayWindows: [SnipCaptureOverlayWindow] = []
     private var annotationWindowControllers: [SnipAnnotationWindowController] = []
 
+    var hotKeyCombo: KeyCombo? { hotKeyService.keyCombo }
+
     func setup() {
         hotKeyService.onTrigger = { [weak self] in
             self?.beginCapture()
         }
         hotKeyService.setup()
+    }
+
+    func changeHotKey(to keyCombo: KeyCombo?) {
+        hotKeyService.change(to: keyCombo)
     }
 }
 

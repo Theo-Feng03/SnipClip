@@ -23,7 +23,7 @@ final class AnnotationToolbarView: NSView {
     private let borderButton = NSButton()
     private let colorWell = NSColorWell()
     private let widthControl = NSSegmentedControl(labels: ["S", "M", "L"], trackingMode: .selectOne, target: nil, action: nil)
-    private static let lineWidths: [CGFloat] = [2, 4, 8]
+    static let lineWidths: [CGFloat] = [2, 4, 8]
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -37,6 +37,13 @@ final class AnnotationToolbarView: NSView {
     func setUndoRedoEnabled(canUndo: Bool, canRedo: Bool) {
         undoButton.isEnabled = canUndo
         redoButton.isEnabled = canRedo
+    }
+
+    func configureInitial(color: NSColor, lineWidth: CGFloat, borderOn: Bool) {
+        colorWell.color = color
+        let index = Self.lineWidths.enumerated().min { abs($0.element - lineWidth) < abs($1.element - lineWidth) }?.offset ?? 1
+        widthControl.selectedSegment = index
+        borderButton.state = borderOn ? .on : .off
     }
 }
 

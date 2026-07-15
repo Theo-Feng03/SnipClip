@@ -125,9 +125,7 @@
 
 /* Begin PBXFileReference section */
 		314B299D1EC49AD5004DD070 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CPYSnippetsEditorWindowController.xib; sourceTree = "<group>"; };
-		314B299E1EC49AEF004DD070 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/CPYSnippetsEditorWindowController.strings; sourceTree = "<group>"; };
 		314B299F1EC49BAF004DD070 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CPYPreferencesWindowController.xib; sourceTree = "<group>"; };
-		314B29A11EC49D31004DD070 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/CPYPreferencesWindowController.strings; sourceTree = "<group>"; };
 		31ACA9F01EC5B85B00BD34C0 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/CPYPreferencesWindowController.strings; sourceTree = "<group>"; };
 		31ACA9F11EC5B85B00BD34C0 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/CPYBetaPreferenceViewController.strings; sourceTree = "<group>"; };
 		31ACA9F21EC5B85B00BD34C0 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/CPYExcludeAppPreferenceViewController.strings; sourceTree = "<group>"; };
@@ -235,17 +233,11 @@
 		FA431F011E6718CE00ACFF56 /* Collection+Safe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+Safe.swift"; sourceTree = "<group>"; };
 		FA6167931D3ACCB90049FA14 /* DraggedDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraggedDataTests.swift; sourceTree = "<group>"; };
 		FAAA885C1E6853B80088FB34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CPYBetaPreferenceViewController.xib; sourceTree = "<group>"; };
-		FAAA88621E6858030088FB34 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/CPYBetaPreferenceViewController.strings; sourceTree = "<group>"; };
 		FAAA886C1E685DC70088FB34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CPYExcludeAppPreferenceViewController.xib; sourceTree = "<group>"; };
-		FAAA88701E685DD40088FB34 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/CPYExcludeAppPreferenceViewController.strings; sourceTree = "<group>"; };
 		FAAA88721E685E270088FB34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CPYGeneralPreferenceViewController.xib; sourceTree = "<group>"; };
-		FAAA88761E685E310088FB34 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/CPYGeneralPreferenceViewController.strings; sourceTree = "<group>"; };
 		FAAA88781E685F360088FB34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CPYMenuPreferenceViewController.xib; sourceTree = "<group>"; };
-		FAAA887C1E685F3F0088FB34 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/CPYMenuPreferenceViewController.strings; sourceTree = "<group>"; };
 		FAAA887E1E6862370088FB34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CPYShortcutsPreferenceViewController.xib; sourceTree = "<group>"; };
-		FAAA88821E6862400088FB34 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/CPYShortcutsPreferenceViewController.strings; sourceTree = "<group>"; };
 		FAAA88841E68627D0088FB34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/CPYTypePreferenceViewController.xib; sourceTree = "<group>"; };
-		FAAA88881E6862850088FB34 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/CPYTypePreferenceViewController.strings; sourceTree = "<group>"; };
 		FAC0DCEE1DE3255E00309C49 /* NSImage+NSColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSImage+NSColor.swift"; sourceTree = "<group>"; };
 		FAC0DCF01DE576F300309C49 /* PasteService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasteService.swift; sourceTree = "<group>"; };
 		FAC43DC61B35D8B100C06102 /* SnipClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SnipClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -766,7 +758,6 @@
 			knownRegions = (
 				en,
 				Base,
-				ja,
 				it,
 				de,
 				"zh-Hans",
@@ -931,7 +922,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				314B299F1EC49BAF004DD070 /* Base */,
-				314B29A11EC49D31004DD070 /* ja */,
 				31ACA9F01EC5B85B00BD34C0 /* it */,
 				846004961FD5511800BA733E /* de */,
 				54ADE0FA2008F63F00239852 /* zh-Hans */,
@@ -944,7 +934,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				FAAA885C1E6853B80088FB34 /* Base */,
-				FAAA88621E6858030088FB34 /* ja */,
 				31ACA9F11EC5B85B00BD34C0 /* it */,
 				846004971FD5511900BA733E /* de */,
 				54ADE0FB2008F64000239852 /* zh-Hans */,
@@ -957,7 +946,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				FAAA886C1E685DC70088FB34 /* Base */,
-				FAAA88701E685DD40088FB34 /* ja */,
 				31ACA9F21EC5B85B00BD34C0 /* it */,
 				846004981FD5511900BA733E /* de */,
 				54ADE0FC2008F64000239852 /* zh-Hans */,
@@ -970,7 +958,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				FAAA88721E685E270088FB34 /* Base */,
-				FAAA88761E685E310088FB34 /* ja */,
 				31ACA9F31EC5B85B00BD34C0 /* it */,
 				846004991FD5511900BA733E /* de */,
 				54ADE0FD2008F64000239852 /* zh-Hans */,
@@ -983,7 +970,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				FAAA88781E685F360088FB34 /* Base */,
-				FAAA887C1E685F3F0088FB34 /* ja */,
 				31ACA9F41EC5B85B00BD34C0 /* it */,
 				8460049A1FD5511900BA733E /* de */,
 				54ADE0FE2008F64000239852 /* zh-Hans */,
@@ -996,7 +982,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				FAAA887E1E6862370088FB34 /* Base */,
-				FAAA88821E6862400088FB34 /* ja */,
 				31ACA9F51EC5B85B00BD34C0 /* it */,
 				8460049B1FD5511900BA733E /* de */,
 				54ADE0FF2008F64000239852 /* zh-Hans */,
@@ -1009,7 +994,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				FAAA88841E68627D0088FB34 /* Base */,
-				FAAA88881E6862850088FB34 /* ja */,
 				31ACA9F61EC5B85C00BD34C0 /* it */,
 				8460049C1FD5511900BA733E /* de */,
 				54ADE1002008F64000239852 /* zh-Hans */,
@@ -1022,7 +1006,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				314B299D1EC49AD5004DD070 /* Base */,
-				314B299E1EC49AEF004DD070 /* ja */,
 				31ACA9F81EC5B85C00BD34C0 /* it */,
 				8460049E1FD5511A00BA733E /* de */,
 				54ADE1022008F64100239852 /* zh-Hans */,

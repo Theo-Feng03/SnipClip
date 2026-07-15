@@ -18,7 +18,7 @@ __Requirement__: macOS 13 Ventura or later
 
 ### Features
 - Clipboard history, snippets, and preferences: inherited from Clipy.
-- Region screenshot capture (default hotkey: Fn+F1), annotation (shapes, text, mosaic, border), and pin-to-screen: see `Clipy/Snip/`.
+- Region screenshot capture (default hotkey: Fn+F1), annotation (shapes, text, mosaic, border), and pin-to-screen: see `SnipClip/Snip/`.
 - Snip defaults (hotkey, default tool/color/line width, border) are configurable in Preferences → Snip.
 
 ### Licence

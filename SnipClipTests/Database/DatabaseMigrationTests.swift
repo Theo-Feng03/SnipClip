@@ -16,7 +16,7 @@ import DependenciesTestSupport
 import RealmSwift
 import SQLiteData
 import Testing
-@testable import Clipy
+@testable import SnipClip
 
 @MainActor
 @Suite(

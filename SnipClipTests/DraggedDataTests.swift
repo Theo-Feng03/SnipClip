@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import Clipy
+@testable import SnipClip
 
 @Suite
 struct DraggedDataTests {

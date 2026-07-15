@@ -13,7 +13,7 @@
 import Dependencies
 import Sharing
 import Testing
-@testable import Clipy
+@testable import SnipClip
 
 @Suite(.dependencies)
 struct StringExtensionsTests {

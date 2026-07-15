@@ -14,7 +14,7 @@ import Combine
 import DependenciesTestSupport
 import SQLiteData
 import Testing
-@testable import Clipy
+@testable import SnipClip
 
 @MainActor
 @Suite(

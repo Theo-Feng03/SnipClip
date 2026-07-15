@@ -12,7 +12,7 @@
 
 import AppKit
 import Testing
-@testable import Clipy
+@testable import SnipClip
 
 @MainActor
 @Suite

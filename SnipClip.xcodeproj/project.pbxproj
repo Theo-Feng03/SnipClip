@@ -650,7 +650,7 @@
 				FA1DB4911DDCB205007F95C8 /* Supporting Files */,
 				E67D37C3B2006C96605BCF9A /* Snip */,
 			);
-			path = Clipy;
+			path = SnipClip;
 			sourceTree = "<group>";
 		};
 		FAC43DDB1B35D8B100C06102 /* ClipyTests */ = {
@@ -664,7 +664,7 @@
 				FA6167931D3ACCB90049FA14 /* DraggedDataTests.swift */,
 				FAC43DDC1B35D8B100C06102 /* Supporting Files */,
 			);
-			path = ClipyTests;
+			path = SnipClipTests;
 			sourceTree = "<group>";
 		};
 		FAC43DDC1B35D8B100C06102 /* Supporting Files */ = {
@@ -1165,7 +1165,7 @@
 				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
 				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
 				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
-				INFOPLIST_FILE = "Clipy/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "SnipClip/Supporting Files/Info.plist";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.snipclip.SnipClip.debug";
 				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
@@ -1190,7 +1190,7 @@
 				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
 				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
 				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
-				INFOPLIST_FILE = "Clipy/Supporting Files/Info.plist";
+				INFOPLIST_FILE = "SnipClip/Supporting Files/Info.plist";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.snipclip.SnipClip";
 				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
@@ -1206,7 +1206,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = ClipyTests/Info.plist;
+				INFOPLIST_FILE = SnipClipTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@loader_path/../Frameworks",
@@ -1220,7 +1220,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = ClipyTests/Info.plist;
+				INFOPLIST_FILE = SnipClipTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@loader_path/../Frameworks",

@@ -109,6 +109,7 @@ struct Constants {
         static let defaultColor = "kCPYSnipDefaultColor"
         static let defaultLineWidth = "kCPYSnipDefaultLineWidth"
         static let defaultShowsBorder = "kCPYSnipDefaultShowsBorder"
+        static let appLanguage = "kCPYAppLanguage"
     }
 
 }

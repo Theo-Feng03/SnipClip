@@ -15,11 +15,19 @@ final class CPYSnipPreferenceViewController: NSViewController {
     private let colorWell = NSColorWell()
     private let widthControl = NSSegmentedControl(labels: ["S", "M", "L"], trackingMode: .selectOne, target: nil, action: nil)
     private let borderCheckbox = NSButton(checkboxWithTitle: String(localized: "Show border by default"), target: nil, action: nil)
+    private let languagePopUp = NSPopUpButton(frame: .zero, pullsDown: false)
+
+    // Value stored in Constants.Snip.appLanguage; "system" means no per-app override.
+    private static let languageOptions: [(value: String, title: String)] = [
+        ("system", String(localized: "System Default")),
+        ("en", "English"),
+        ("zh-Hans", "简体中文")
+    ]
 
     @Dependency(\.defaultAppStorage) private var appStorage
 
     override func loadView() {
-        view = NSView(frame: NSRect(x: 0, y: 0, width: 480, height: 220))
+        view = NSView(frame: NSRect(x: 0, y: 0, width: 480, height: 260))
         build()
         loadCurrentValues()
     }
@@ -47,12 +55,17 @@ private extension CPYSnipPreferenceViewController {
         borderCheckbox.target = self
         borderCheckbox.action = #selector(borderChanged)
 
+        Self.languageOptions.forEach { languagePopUp.addItem(withTitle: $0.title) }
+        languagePopUp.target = self
+        languagePopUp.action = #selector(languageChanged)
+
         let rows = [
             labeledRow(title: String(localized: "Hotkey:"), control: hotKeyRecordView),
             labeledRow(title: String(localized: "Default Tool:"), control: toolPopUp),
             labeledRow(title: String(localized: "Default Color:"), control: colorWell),
             labeledRow(title: String(localized: "Default Line Width:"), control: widthControl),
-            borderCheckbox
+            borderCheckbox,
+            labeledRow(title: String(localized: "Language:"), control: languagePopUp)
         ]
 
         let stack = NSStackView(views: rows)
@@ -102,6 +115,10 @@ private extension CPYSnipPreferenceViewController {
         widthControl.selectedSegment = index
 
         borderCheckbox.state = appStorage.bool(forKey: Constants.Snip.defaultShowsBorder) ? .on : .off
+
+        let language = UserDefaults.standard.string(forKey: Constants.Snip.appLanguage) ?? "system"
+        let languageIndex = Self.languageOptions.firstIndex { $0.value == language } ?? 0
+        languagePopUp.selectItem(at: languageIndex)
     }
 
     @objc func toolChanged() {
@@ -121,6 +138,41 @@ private extension CPYSnipPreferenceViewController {
 
     @objc func borderChanged() {
         appStorage.set(borderCheckbox.state == .on, forKey: Constants.Snip.defaultShowsBorder)
+    }
+
+    @objc func languageChanged() {
+        guard Self.languageOptions.indices.contains(languagePopUp.indexOfSelectedItem) else { return }
+        let choice = Self.languageOptions[languagePopUp.indexOfSelectedItem].value
+
+        // AppleLanguages is the system-level per-app language override; it must live in
+        // UserDefaults.standard and only takes effect on the next launch.
+        let defaults = UserDefaults.standard
+        defaults.set(choice, forKey: Constants.Snip.appLanguage)
+        if choice == "system" {
+            defaults.removeObject(forKey: "AppleLanguages")
+        } else {
+            defaults.set([choice], forKey: "AppleLanguages")
+        }
+        defaults.synchronize()
+        promptRelaunch()
+    }
+
+    func promptRelaunch() {
+        let alert = NSAlert()
+        alert.messageText = String(localized: "Language changed")
+        alert.informativeText = String(localized: "Relaunch SnipClip to apply the new language.")
+        alert.addButton(withTitle: String(localized: "Relaunch Now"))
+        alert.addButton(withTitle: String(localized: "Later"))
+        NSApp.activate(ignoringOtherApps: true)
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+
+        let configuration = NSWorkspace.OpenConfiguration()
+        configuration.createsNewApplicationInstance = true
+        NSWorkspace.shared.openApplication(at: Bundle.main.bundleURL, configuration: configuration) { _, _ in
+            DispatchQueue.main.async {
+                NSApp.terminate(nil)
+            }
+        }
     }
 }
 

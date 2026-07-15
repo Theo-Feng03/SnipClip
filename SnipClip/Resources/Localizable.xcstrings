@@ -3,24 +3,6 @@
   "strings": {
     "Add": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adicionar"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hinzufügen"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aggiungi"
-          }
-        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -31,24 +13,6 @@
     },
     "Are you sure want to delete this item?": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tem certeza de que deseja excluir este item?"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Möchten sie diesen Eintrag wirklich löschen?"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vuoi davvero eliminare questo elemento?"
-          }
-        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -59,24 +23,6 @@
     },
     "Are you sure you want to clear your clipboard history?": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tem certeza de que deseja limpar seu histórico da área de transferência?"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Möchten sie den Verlauf ihrer Zwischenablage wirklich löschen?"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vuoi davvero cancellare tutte le voci della Cronologia?"
-          }
-        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -87,24 +33,6 @@
     },
     "Cancel": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancelar"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abbrechen"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Annulla"
-          }
-        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -115,24 +43,6 @@
     },
     "Clear History": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Limpar Histórico"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Verlauf löschen"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Svuota la Cronologia"
-          }
-        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -143,24 +53,6 @@
     },
     "Delete Item": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Excluir Item"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Einträge löschen"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elimina"
-          }
-        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -171,24 +63,6 @@
     },
     "Don't Launch": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Não Iniciar"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nicht starten"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Non avviare"
-          }
-        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -199,28 +73,10 @@
     },
     "Edit Snippets": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Editar Snippets..."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Snippets bearbeiten..."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Edit Snippets..."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Modifica snippet..."
           }
         },
         "zh-Hans": {
@@ -234,28 +90,10 @@
     "General": {
       "extractionState": "manual",
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geral"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Allgemein"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "General"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Generali"
           }
         },
         "zh-Hans": {
@@ -268,24 +106,6 @@
     },
     "History": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Histórico"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Verlauf"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cronologia"
-          }
-        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -296,24 +116,6 @@
     },
     "Launch SnipClip on system startup?": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Iniciar o SnipClip ao iniciar o sistema?"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "SnipClip beim Starten öffnen?"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vuoi avviare SnipClip al login?"
-          }
-        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -324,24 +126,6 @@
     },
     "Launch on system startup": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Iniciar com o sistema"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anwendung automatisch starten"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Avvia SnipClip al login"
-          }
-        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -353,25 +137,7 @@
     "Menu": {
       "extractionState": "manual",
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Menu"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Menü"
-          }
-        },
         "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Menu"
-          }
-        },
-        "it": {
           "stringUnit": {
             "state": "translated",
             "value": "Menu"
@@ -387,24 +153,6 @@
     },
     "Open System Preferences": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abrir Preferências do Sistema"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open System Preferences"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open System Preferences"
-          }
-        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -415,25 +163,7 @@
     },
     "Please allow Accessibility": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Por favor, permita Acessibilidade"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Please allow Accessibility."
-          }
-        },
         "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Please allow Accessibility."
-          }
-        },
-        "it": {
           "stringUnit": {
             "state": "translated",
             "value": "Please allow Accessibility."
@@ -449,24 +179,6 @@
     },
     "Please fill in the contents of the snippet": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Por favor, preencha o conteúdo do snippet"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bitte geben Sie den Inhalt des Snippets ein"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Si prega di compilare il contenuto dello snippet"
-          }
-        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -477,28 +189,10 @@
     },
     "Preferences": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Preferências..."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Einstellungen..."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Preferences..."
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Preferenze..."
           }
         },
         "zh-Hans": {
@@ -511,24 +205,6 @@
     },
     "Quit SnipClip": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Encerrar SnipClip"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "SnipClip beenden"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Esci da SnipClip"
-          }
-        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -540,28 +216,10 @@
     "Shortcuts": {
       "extractionState": "manual",
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Atalhos"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tastenkombinationen"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Shortcuts"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scorciatoie"
           }
         },
         "zh-Hans": {
@@ -574,24 +232,6 @@
     },
     "Snippet": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Snippet"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Snippet"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Snippet"
-          }
-        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
@@ -602,25 +242,7 @@
     },
     "To do this action please allow Accessibility in Security Privacy preferences located in System Preferences": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Para realizar esta ação, permita Acessibilidade nas preferências de Segurança e Privacidade localizadas nas Preferências do Sistema."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "To do this action please allow Accessibility in Security & Privacy preferences, located in System Preferences."
-          }
-        },
         "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "To do this action please allow Accessibility in Security & Privacy preferences, located in System Preferences."
-          }
-        },
-        "it": {
           "stringUnit": {
             "state": "translated",
             "value": "To do this action please allow Accessibility in Security & Privacy preferences, located in System Preferences."
@@ -637,28 +259,10 @@
     "Updates": {
       "extractionState": "manual",
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Atualizações"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aktualisierungen"
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "Updates"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aggiornamenti"
           }
         },
         "zh-Hans": {
@@ -671,34 +275,246 @@
     },
     "You can change this setting in the Preferences if you want": {
       "localizations": {
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Você pode alterar essa configuração nas Preferências, se desejar."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sie können diese Option in den Einstellungen ändern."
-          }
-        },
         "en": {
           "stringUnit": {
             "state": "translated",
             "value": "You can change this setting in the Preferences if you want."
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Puoi modificare questa impostazione nelle Preferenze."
-          }
-        },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "如有需要可在偏好设置中修改本设置。"
+          }
+        }
+      }
+    },
+    "Hotkey:": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "快捷键："
+          }
+        }
+      }
+    },
+    "Default Tool:": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "默认工具："
+          }
+        }
+      }
+    },
+    "Default Color:": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "默认颜色："
+          }
+        }
+      }
+    },
+    "Default Line Width:": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "默认线宽："
+          }
+        }
+      }
+    },
+    "Show border by default": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "默认显示边框"
+          }
+        }
+      }
+    },
+    "Language:": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "语言："
+          }
+        }
+      }
+    },
+    "System Default": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跟随系统"
+          }
+        }
+      }
+    },
+    "Language changed": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "语言已更改"
+          }
+        }
+      }
+    },
+    "Relaunch SnipClip to apply the new language.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新启动 SnipClip 以应用新语言。"
+          }
+        }
+      }
+    },
+    "Relaunch Now": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "立即重启"
+          }
+        }
+      }
+    },
+    "Later": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "稍后"
+          }
+        }
+      }
+    },
+    "None": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无"
+          }
+        }
+      }
+    },
+    "Rectangle": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "矩形"
+          }
+        }
+      }
+    },
+    "Ellipse": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "椭圆"
+          }
+        }
+      }
+    },
+    "Arrow": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "箭头"
+          }
+        }
+      }
+    },
+    "Line": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "直线"
+          }
+        }
+      }
+    },
+    "Text": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文字"
+          }
+        }
+      }
+    },
+    "Step Marker": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "步骤标记"
+          }
+        }
+      }
+    },
+    "Mosaic": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "马赛克"
+          }
+        }
+      }
+    },
+    "Please allow Screen Recording": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请允许屏幕录制"
+          }
+        }
+      }
+    },
+    "To capture the screen, allow Screen Recording for SnipClip in Privacy & Security settings, then try again.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "要进行截图，请在“隐私与安全性”设置中允许 SnipClip 使用屏幕录制，然后重试。"
+          }
+        }
+      }
+    },
+    "Open System Settings": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开系统设置"
+          }
+        }
+      }
+    },
+    "Snip": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "截图"
           }
         }
       }

@@ -126,6 +126,7 @@ private extension SnipAnnotationWindowController {
         toolbarView.onCopy = { [weak self] in self?.finish(.copy) }
         canvasView.onEscape = { [weak self] in self?.finish(.cancel) }
         canvasView.onToggleToolbar = { [weak self] in self?.toggleToolbar() }
+        canvasView.onDoubleClickClose = { [weak self] in self?.finish(.cancel) }
     }
 
     func toggleToolbar() {

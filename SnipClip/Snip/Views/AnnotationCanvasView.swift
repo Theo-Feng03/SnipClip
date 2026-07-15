@@ -35,13 +35,12 @@ final class AnnotationCanvasView: NSView {
 
     override var isFlipped: Bool { false }
     override var acceptsFirstResponder: Bool { true }
-    // While editing, the canvas owns drag gestures for drawing; when editing is off
-    // (toolbar hidden), hand drags back to AppKit so they move the window instead.
-    override var mouseDownCanMoveWindow: Bool { !isEditable }
+    override var mouseDownCanMoveWindow: Bool { false }
 
     var isEditable = true
     var onEscape: (() -> Void)?
     var onToggleToolbar: (() -> Void)?
+    var onDoubleClickClose: (() -> Void)?
 
     var canUndo: Bool { history.canUndo }
     var canRedo: Bool { history.canRedo }
@@ -66,7 +65,19 @@ final class AnnotationCanvasView: NSView {
 
     override func mouseDown(with event: NSEvent) {
         window?.makeFirstResponder(self)
-        guard isEditable, currentTool != .none else { return }
+        if event.clickCount == 2 {
+            onDoubleClickClose?()
+            return
+        }
+        guard isEditable, currentTool != .none else {
+            // Viewing mode (toolbar hidden): dragging the image moves the window. Done
+            // manually via performDrag rather than mouseDownCanMoveWindow so this view
+            // still receives clicks for the double-click-to-close gesture above.
+            if !isEditable {
+                window?.performDrag(with: event)
+            }
+            return
+        }
         let point = clampedPoint(convert(event.locationInWindow, from: nil))
 
         switch currentTool {

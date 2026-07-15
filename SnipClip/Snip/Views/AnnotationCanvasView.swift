@@ -35,8 +35,11 @@ final class AnnotationCanvasView: NSView {
 
     override var isFlipped: Bool { false }
     override var acceptsFirstResponder: Bool { true }
-    override var mouseDownCanMoveWindow: Bool { false }
+    // While editing, the canvas owns drag gestures for drawing; when editing is off
+    // (toolbar hidden), hand drags back to AppKit so they move the window instead.
+    override var mouseDownCanMoveWindow: Bool { !isEditable }
 
+    var isEditable = true
     var onEscape: (() -> Void)?
     var onToggleToolbar: (() -> Void)?
 
@@ -63,7 +66,7 @@ final class AnnotationCanvasView: NSView {
 
     override func mouseDown(with event: NSEvent) {
         window?.makeFirstResponder(self)
-        guard currentTool != .none else { return }
+        guard isEditable, currentTool != .none else { return }
         let point = clampedPoint(convert(event.locationInWindow, from: nil))
 
         switch currentTool {
@@ -105,7 +108,7 @@ final class AnnotationCanvasView: NSView {
             onEscape?()
             return
         }
-        guard event.modifierFlags.contains(.command), event.charactersIgnoringModifiers?.lowercased() == "z" else {
+        guard isEditable, event.modifierFlags.contains(.command), event.charactersIgnoringModifiers?.lowercased() == "z" else {
             super.keyDown(with: event)
             return
         }

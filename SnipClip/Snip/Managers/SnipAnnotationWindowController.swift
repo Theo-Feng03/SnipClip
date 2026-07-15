@@ -131,6 +131,9 @@ private extension SnipAnnotationWindowController {
     func toggleToolbar() {
         let isHidden = !toolbarView.isHidden
         toolbarView.isHidden = isHidden
+        // With the toolbar hidden the window is in "viewing" mode: drawing is disabled and
+        // dragging the image moves the window instead (see AnnotationCanvasView.isEditable).
+        canvasView.isEditable = !isHidden
         let canvasY = isHidden ? Self.previewMargin : Self.toolbarHeight + Self.previewMargin
         canvasView.setFrameOrigin(NSPoint(x: canvasView.frame.origin.x, y: canvasY))
         updateBorderFrame()

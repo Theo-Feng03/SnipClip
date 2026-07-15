@@ -354,36 +354,36 @@
         }
       }
     },
-    "Launch Clipy on system startup?" : {
+    "Launch SnipClip on system startup?" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Iniciar o Clipy ao iniciar o sistema?"
+            "value" : "Iniciar o SnipClip ao iniciar o sistema?"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Clipy beim Starten öffnen?"
+            "value" : "SnipClip beim Starten öffnen?"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vuoi avviare Clipy al login?"
+            "value" : "Vuoi avviare SnipClip al login?"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "システム起動時にClipyを起動しますか?"
+            "value" : "システム起動時にSnipClipを起動しますか?"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "系统启动时打开 Clipy?"
+            "value" : "系统启动时打开 SnipClip?"
           }
         }
       }
@@ -405,7 +405,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avvia Clipy al login"
+            "value" : "Avvia SnipClip al login"
           }
         },
         "ja" : {
@@ -611,36 +611,36 @@
         }
       }
     },
-    "Quit Clipy" : {
+    "Quit SnipClip" : {
       "localizations" : {
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Encerrar Clipy"
+            "value" : "Encerrar SnipClip"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Clipy beenden"
+            "value" : "SnipClip beenden"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esci da Clipy"
+            "value" : "Esci da SnipClip"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Clipyを終了"
+            "value" : "SnipClipを終了"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "退出 Clipy"
+            "value" : "退出 SnipClip"
           }
         }
       }
@@ -749,7 +749,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "この動作を行うためにはシステム環境設定の\"セキュリティとプライバシー\"環境設定で、Clipyへのアクセシビリティのアクセスを許可してください。"
+            "value" : "この動作を行うためにはシステム環境設定の\"セキュリティとプライバシー\"環境設定で、SnipClipへのアクセシビリティのアクセスを許可してください。"
           }
         },
         "zh-Hans" : {

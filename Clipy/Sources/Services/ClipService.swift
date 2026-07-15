@@ -23,7 +23,7 @@ final class ClipService {
     fileprivate var cachedChangeCount = BehaviorRelay<Int>(value: 0)
     fileprivate var storeTypes = [String: NSNumber]()
     fileprivate let scheduler = SerialDispatchQueueScheduler(qos: .userInteractive)
-    fileprivate let lock = NSRecursiveLock(name: "com.clipy-app.Clipy.ClipUpdatable")
+    fileprivate let lock = NSRecursiveLock(name: "com.snipclip.SnipClip.ClipUpdatable")
     fileprivate var disposeBag = DisposeBag()
 
     @Dependency(\.pasteboardHistoryRepository)

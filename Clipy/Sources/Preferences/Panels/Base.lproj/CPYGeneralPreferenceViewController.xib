@@ -17,7 +17,7 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="259"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="el7-aR-A2S" customClass="CPYDesignableButton" customModule="Clipy" customModuleProvider="target">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="el7-aR-A2S" customClass="CPYDesignableButton" customModule="SnipClip" customModuleProvider="target">
                     <rect key="frame" x="59" y="204" width="297" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Launch on Login" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="Su3-mF-z1T">
@@ -28,7 +28,7 @@
                         <binding destination="Rq0-bo-cst" name="value" keyPath="values.loginItem" id="6de-vm-p5k"/>
                     </connections>
                 </button>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vCQ-Oh-Jf7" customClass="CPYDesignableButton" customModule="Clipy" customModuleProvider="target">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vCQ-Oh-Jf7" customClass="CPYDesignableButton" customModule="SnipClip" customModuleProvider="target">
                     <rect key="frame" x="59" y="182" width="340" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Input &quot;⌘ + V&quot; after menu item selection" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="0yt-u0-ROt">
@@ -39,7 +39,7 @@
                         <binding destination="Rq0-bo-cst" name="value" keyPath="values.kCPYPrefInputPasteCommandKey" id="8bQ-Th-8DI"/>
                     </connections>
                 </button>
-                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VCz-7v-qzU" customClass="CPYDesignableButton" customModule="Clipy" customModuleProvider="target">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VCz-7v-qzU" customClass="CPYDesignableButton" customModule="SnipClip" customModuleProvider="target">
                     <rect key="frame" x="59" y="160" width="403" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Send crash reports and usage logs (applies next launch)" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="LsC-YB-qAw">

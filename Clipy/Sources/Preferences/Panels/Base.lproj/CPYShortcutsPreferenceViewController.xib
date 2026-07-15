@@ -5,7 +5,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="CPYShortcutsPreferenceViewController" customModule="Clipy" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="CPYShortcutsPreferenceViewController" customModule="SnipClip" customModuleProvider="target">
             <connections>
                 <outlet property="clearHistoryShortcutRecordView" destination="pCf-EG-Cp9" id="K22-8R-Gk9"/>
                 <outlet property="historyShortcutRecordView" destination="hDA-gc-n3S" id="fzg-O8-Fze"/>

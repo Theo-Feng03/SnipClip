@@ -22,7 +22,7 @@ final class PasteService {
             .flatMap { $0.submenu?.items ?? [] }
             .first { $0.action == #selector(NSText.paste(_:)) }
     }()
-    fileprivate let lock = NSRecursiveLock(name: "com.clipy-app.Clipy.Pastable")
+    fileprivate let lock = NSRecursiveLock(name: "com.snipclip.SnipClip.Pastable")
     fileprivate var isPastePlainText: Bool {
         guard AppEnvironment.current.defaults.bool(forKey: Constants.Beta.pastePlainText) else { return false }
 

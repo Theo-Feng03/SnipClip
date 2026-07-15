@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="CPYSnippetsEditorWindowController" customModule="Clipy" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="CPYSnippetsEditorWindowController" customModule="SnipClip" customModuleProvider="target">
             <connections>
                 <outlet property="folderSettingView" destination="Ygf-rF-MiG" id="yje-y2-5Su"/>
                 <outlet property="folderShortcutRecordView" destination="zjO-0c-pwM" id="x7o-Yz-Zpe"/>
@@ -167,7 +167,7 @@
                                     </button>
                                 </subviews>
                             </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Pj1-QF-bGu" customClass="CPYDesignableView" customModule="Clipy" customModuleProvider="target">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Pj1-QF-bGu" customClass="CPYDesignableView" customModule="SnipClip" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="800" height="1"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="mmC-6S-EmQ"/>
@@ -187,7 +187,7 @@
                             <constraint firstAttribute="bottom" secondItem="Pj1-QF-bGu" secondAttribute="bottom" id="ryK-X0-h3T"/>
                         </constraints>
                     </customView>
-                    <splitView arrangesAllSubviews="NO" dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BiM-Ll-CfO" customClass="CPYSplitView" customModule="Clipy" customModuleProvider="target">
+                    <splitView arrangesAllSubviews="NO" dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BiM-Ll-CfO" customClass="CPYSplitView" customModule="SnipClip" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="800" height="544"/>
                         <subviews>
                             <customView focusRingType="none" id="gSL-Od-RtU">
@@ -213,7 +213,7 @@
                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                             </tableHeaderCell>
-                                                            <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Text" id="J4q-sY-gcS" customClass="CPYSnippetsEditorCell" customModule="Clipy" customModuleProvider="target">
+                                                            <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Text" id="J4q-sY-gcS" customClass="CPYSnippetsEditorCell" customModule="SnipClip" customModuleProvider="target">
                                                                 <font key="font" metaFont="system"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -256,7 +256,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="549" height="544"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <textView hidden="YES" importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="Sg6-q3-8Kx" customClass="CPYPlaceHolderTextView" customModule="Clipy" customModuleProvider="target">
+                                                <textView hidden="YES" importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="Sg6-q3-8Kx" customClass="CPYPlaceHolderTextView" customModule="SnipClip" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="549" height="544"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="calibratedRGB"/>
@@ -287,7 +287,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="Ygf-rF-MiG" customClass="CPYDesignableView" customModule="Clipy" customModuleProvider="target">
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="Ygf-rF-MiG" customClass="CPYDesignableView" customModule="SnipClip" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="549" height="544"/>
                                         <subviews>
                                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="H8F-IV-Fl5">
@@ -338,7 +338,7 @@
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
                                                     </textField>
-                                                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hSp-7i-idd" customClass="CPYDesignableView" customModule="Clipy" customModuleProvider="target">
+                                                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hSp-7i-idd" customClass="CPYDesignableView" customModule="SnipClip" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="177" width="250" height="1"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
@@ -346,7 +346,7 @@
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </customView>
-                                                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wKH-Tu-3bF" customClass="CPYDesignableView" customModule="Clipy" customModuleProvider="target">
+                                                    <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wKH-Tu-3bF" customClass="CPYDesignableView" customModule="SnipClip" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="250" height="34"/>
                                                         <subviews>
                                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1c3-zO-hfE">

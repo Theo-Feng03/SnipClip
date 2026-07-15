@@ -131,7 +131,7 @@ private extension SnipManager {
     func showPermissionAlert() {
         let alert = NSAlert()
         alert.messageText = String(localized: "Please allow Screen Recording")
-        alert.informativeText = String(localized: "To capture the screen, allow Screen Recording for Clipy in Privacy & Security settings, then try again.")
+        alert.informativeText = String(localized: "To capture the screen, allow Screen Recording for SnipClip in Privacy & Security settings, then try again.")
         alert.addButton(withTitle: String(localized: "Open System Settings"))
         alert.addButton(withTitle: String(localized: "Cancel"))
         NSApp.activate(ignoringOtherApps: true)

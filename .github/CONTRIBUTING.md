@@ -1,6 +1,6 @@
-# Contributing to Clipy
+# Contributing to SnipClip
 
-:tada: Thank you for contributing to Clipy :tada:
+:tada: Thank you for contributing to SnipClip :tada:
 
 ## Localization
 

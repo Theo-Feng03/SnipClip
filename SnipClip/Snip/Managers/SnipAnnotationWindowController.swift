@@ -215,4 +215,8 @@ extension SnipAnnotationWindowController: AnnotationCanvasViewDelegate {
     func annotationCanvasView(_ view: AnnotationCanvasView, didUpdateHistory canUndo: Bool, canRedo: Bool) {
         toolbarView.setUndoRedoEnabled(canUndo: canUndo, canRedo: canRedo)
     }
+
+    func annotationCanvasView(_ view: AnnotationCanvasView, didChangeLineWidthTo lineWidth: CGFloat) {
+        toolbarView.reflectLineWidth(lineWidth)
+    }
 }

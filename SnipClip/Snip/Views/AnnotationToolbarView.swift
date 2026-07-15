@@ -45,6 +45,18 @@ final class AnnotationToolbarView: NSView {
         widthControl.selectedSegment = index
         borderButton.state = borderOn ? .on : .off
     }
+
+    // Keeps the S/M/L control in sync with scroll-wheel width changes: highlights the
+    // matching preset, or clears the selection for an in-between width.
+    func reflectLineWidth(_ lineWidth: CGFloat) {
+        if let index = Self.lineWidths.firstIndex(of: lineWidth) {
+            widthControl.selectedSegment = index
+        } else {
+            for segment in 0..<widthControl.segmentCount {
+                widthControl.setSelected(false, forSegment: segment)
+            }
+        }
+    }
 }
 
 private extension AnnotationToolbarView {

@@ -8,6 +8,7 @@ import AppKit
 
 protocol AnnotationCanvasViewDelegate: AnyObject {
     func annotationCanvasView(_ view: AnnotationCanvasView, didUpdateHistory canUndo: Bool, canRedo: Bool)
+    func annotationCanvasView(_ view: AnnotationCanvasView, didChangeLineWidthTo lineWidth: CGFloat)
 }
 
 final class AnnotationCanvasView: NSView {
@@ -23,6 +24,11 @@ final class AnnotationCanvasView: NSView {
     private var dragStart: NSPoint?
     private var activeTextEditor: NSTextField?
     private let history = UndoManager()
+    private var scrollAccumulator: CGFloat = 0
+    private var widthHUDLocation: NSPoint = .zero
+    private var widthHUDExpiry: Date?
+
+    private static let lineWidthRange: ClosedRange<CGFloat> = 1...20
 
     init(baseImage: NSImage) {
         self.baseImage = baseImage
@@ -61,6 +67,47 @@ final class AnnotationCanvasView: NSView {
         baseImage.draw(in: bounds)
         shapes.forEach { $0.draw(baseImage: baseImage) }
         inProgressShape?.draw(baseImage: baseImage)
+        drawWidthHUD()
+    }
+
+    override func scrollWheel(with event: NSEvent) {
+        guard isEditable else {
+            super.scrollWheel(with: event)
+            return
+        }
+        // Normalize so that physically scrolling up always means "thicker" regardless
+        // of the user's natural-scrolling setting.
+        var delta = event.scrollingDeltaY
+        if event.isDirectionInvertedFromDevice {
+            delta = -delta
+        }
+        scrollAccumulator += delta
+
+        let step: CGFloat = 5
+        var changed = false
+        while scrollAccumulator >= step {
+            scrollAccumulator -= step
+            if currentLineWidth < Self.lineWidthRange.upperBound {
+                currentLineWidth += 1
+                changed = true
+            }
+        }
+        while scrollAccumulator <= -step {
+            scrollAccumulator += step
+            if currentLineWidth > Self.lineWidthRange.lowerBound {
+                currentLineWidth -= 1
+                changed = true
+            }
+        }
+        guard changed else { return }
+
+        widthHUDLocation = clampedPoint(convert(event.locationInWindow, from: nil))
+        widthHUDExpiry = Date().addingTimeInterval(0.8)
+        delegate?.annotationCanvasView(self, didChangeLineWidthTo: currentLineWidth)
+        needsDisplay = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.85) { [weak self] in
+            self?.needsDisplay = true
+        }
     }
 
     override func mouseDown(with event: NSEvent) {
@@ -141,6 +188,48 @@ private extension AnnotationCanvasView {
 
     func clampedPoint(_ point: NSPoint) -> NSPoint {
         NSPoint(x: min(max(point.x, 0), bounds.width), y: min(max(point.y, 0), bounds.height))
+    }
+
+    // Transient indicator shown while adjusting line width with the scroll wheel:
+    // a dot at the actual stroke size plus a numeric readout, near the cursor.
+    func drawWidthHUD() {
+        guard let expiry = widthHUDExpiry, expiry > Date() else { return }
+
+        let dotDiameter = currentLineWidth
+        let dotRect = NSRect(
+            x: widthHUDLocation.x - dotDiameter / 2,
+            y: widthHUDLocation.y - dotDiameter / 2,
+            width: dotDiameter,
+            height: dotDiameter
+        )
+
+        let text = "\(Int(currentLineWidth))"
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .medium),
+            .foregroundColor: NSColor.white
+        ]
+        let textSize = text.size(withAttributes: attributes)
+        let padding: CGFloat = 4
+        var labelOrigin = NSPoint(x: widthHUDLocation.x + 14, y: widthHUDLocation.y + 14)
+        labelOrigin.x = min(labelOrigin.x, bounds.width - textSize.width - padding * 2)
+        labelOrigin.y = min(labelOrigin.y, bounds.height - textSize.height - padding * 2)
+        let labelRect = NSRect(
+            x: labelOrigin.x,
+            y: labelOrigin.y,
+            width: textSize.width + padding * 2,
+            height: textSize.height + padding * 2
+        )
+
+        NSColor.black.withAlphaComponent(0.6).setFill()
+        NSBezierPath(roundedRect: labelRect, xRadius: 4, yRadius: 4).fill()
+        text.draw(at: NSPoint(x: labelRect.minX + padding, y: labelRect.minY + padding), withAttributes: attributes)
+
+        currentColor.setFill()
+        NSBezierPath(ovalIn: dotRect).fill()
+        NSColor.white.withAlphaComponent(0.8).setStroke()
+        let ring = NSBezierPath(ovalIn: dotRect.insetBy(dx: -1, dy: -1))
+        ring.lineWidth = 1
+        ring.stroke()
     }
 
     func isSignificant(_ shape: SnipShape) -> Bool {

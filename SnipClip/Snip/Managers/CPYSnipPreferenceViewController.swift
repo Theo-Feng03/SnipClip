@@ -95,7 +95,7 @@ private extension CPYSnipPreferenceViewController {
     }
 
     func loadCurrentValues() {
-        guard let appDelegate = NSApp.delegate as? AppDelegate else { return }
+        guard let appDelegate = AppDelegate.shared else { return }
         hotKeyRecordView.keyCombo = appDelegate.snipManager.hotKeyCombo
 
         let tool = SnipTool(rawValue: appStorage.string(forKey: Constants.Snip.defaultTool) ?? "") ?? .rectangle
@@ -182,7 +182,7 @@ extension CPYSnipPreferenceViewController: RecordViewDelegate {
     func recordViewDidEndRecording(_ recordView: RecordView) {}
 
     func recordView(_ recordView: RecordView, didChangeKeyCombo keyCombo: KeyCombo?) {
-        guard let appDelegate = NSApp.delegate as? AppDelegate else { return }
+        guard let appDelegate = AppDelegate.shared else { return }
         appDelegate.snipManager.changeHotKey(to: keyCombo)
     }
 }

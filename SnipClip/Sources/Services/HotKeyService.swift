@@ -53,7 +53,7 @@ extension HotKeyService {
     }
 
     @objc func popUpClearHistoryAlert() {
-        guard let appDelegate = NSApp.delegate as? AppDelegate else { return }
+        guard let appDelegate = AppDelegate.shared else { return }
         appDelegate.clearAllHistory()
     }
 }

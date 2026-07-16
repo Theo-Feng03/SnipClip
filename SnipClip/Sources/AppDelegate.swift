@@ -21,6 +21,15 @@ import ServiceManagement
 class AppDelegate: NSObject, NSMenuItemValidation {
 
     // MARK: - Properties
+    // Under the SwiftUI app lifecycle NSApp.delegate is SwiftUI's own wrapper object,
+    // so `NSApp.delegate as? AppDelegate` returns nil. Use this instead.
+    private(set) static weak var shared: AppDelegate?
+
+    override init() {
+        super.init()
+        AppDelegate.shared = self
+    }
+
     private let screenshotObserver = ScreenShotObserver()
     let snipManager = SnipManager()
     private let disposeBag = DisposeBag()

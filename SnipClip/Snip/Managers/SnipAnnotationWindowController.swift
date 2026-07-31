@@ -34,8 +34,8 @@ final class SnipAnnotationWindowController: NSWindowController {
     // ring sits flush against the canvas with no visible gap, mirroring how addBorderIfNeeded(to:)
     // pads the real exported image.
     private static let previewMargin: CGFloat = borderWidth
-    private static let viewingScaleRange: ClosedRange<CGFloat> = 0.25...4
-    private static let viewingScaleStep: CGFloat = 0.1
+    private static let viewingScaleRange: ClosedRange<CGFloat> = 0.1...8
+    private static let viewingScaleFactor: CGFloat = 1.12
 
     init(image: NSImage, screenPoint: NSPoint) {
         let canvas = AnnotationCanvasView(baseImage: image)
@@ -132,7 +132,9 @@ private extension SnipAnnotationWindowController {
         canvasView.onEscape = { [weak self] in self?.finish(.cancel) }
         canvasView.onToggleToolbar = { [weak self] in self?.toggleToolbar() }
         canvasView.onDoubleClickClose = { [weak self] in self?.finish(.cancel) }
-        canvasView.onZoomStep = { [weak self] direction in self?.zoomViewingMode(direction: direction) }
+        canvasView.onZoomStep = { [weak self] direction, anchor, screenPoint in
+            self?.zoomViewingMode(direction: direction, anchor: anchor, screenPoint: screenPoint)
+        }
     }
 
     func toggleToolbar() {
@@ -153,16 +155,22 @@ private extension SnipAnnotationWindowController {
         borderFrameView.frame = canvasView.frame.insetBy(dx: -Self.previewMargin, dy: -Self.previewMargin)
     }
 
-    func zoomViewingMode(direction: Int) {
+    func zoomViewingMode(direction: Int, anchor: NSPoint, screenPoint: NSPoint) {
         guard toolbarView.isHidden, direction != 0 else { return }
-        let proposed = viewingScale + CGFloat(direction) * Self.viewingScaleStep
+        let proposed = direction > 0
+            ? viewingScale * Self.viewingScaleFactor
+            : viewingScale / Self.viewingScaleFactor
         let clamped = min(max(proposed, Self.viewingScaleRange.lowerBound), Self.viewingScaleRange.upperBound)
         guard clamped != viewingScale else { return }
         viewingScale = clamped
-        resizeViewingWindow(to: viewingScale)
+        resizeViewingWindow(to: viewingScale, anchor: anchor, screenPoint: screenPoint)
     }
 
-    func resizeViewingWindow(to scale: CGFloat) {
+    func resizeViewingWindow(
+        to scale: CGFloat,
+        anchor: NSPoint = NSPoint(x: 0.5, y: 0.5),
+        screenPoint: NSPoint? = nil
+    ) {
         guard let window else { return }
         let center = NSPoint(x: window.frame.midX, y: window.frame.midY)
         canvasView.setDisplayScale(scale)
@@ -171,8 +179,19 @@ private extension SnipAnnotationWindowController {
             height: canvasView.frame.height + Self.previewMargin * 2
         )
         window.setContentSize(contentSize)
-        window.setFrameOrigin(NSPoint(x: center.x - window.frame.width / 2, y: center.y - window.frame.height / 2))
         canvasView.setFrameOrigin(NSPoint(x: Self.previewMargin, y: Self.previewMargin))
+        if let screenPoint {
+            let anchorInWindow = NSPoint(
+                x: Self.previewMargin + canvasView.frame.width * anchor.x,
+                y: Self.previewMargin + canvasView.frame.height * anchor.y
+            )
+            window.setFrameOrigin(NSPoint(
+                x: screenPoint.x - anchorInWindow.x,
+                y: screenPoint.y - anchorInWindow.y
+            ))
+        } else {
+            window.setFrameOrigin(NSPoint(x: center.x - window.frame.width / 2, y: center.y - window.frame.height / 2))
+        }
         updateBorderFrame()
     }
 

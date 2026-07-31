@@ -49,7 +49,7 @@ final class AnnotationCanvasView: NSView {
     var onEscape: (() -> Void)?
     var onToggleToolbar: (() -> Void)?
     var onDoubleClickClose: (() -> Void)?
-    var onZoomStep: ((Int) -> Void)?
+    var onZoomStep: ((Int, NSPoint, NSPoint) -> Void)?
 
     var canUndo: Bool { history.canUndo }
     var canRedo: Bool { history.canRedo }
@@ -93,15 +93,21 @@ final class AnnotationCanvasView: NSView {
             if event.isDirectionInvertedFromDevice {
                 delta = -delta
             }
+            let location = convert(event.locationInWindow, from: nil)
+            let anchor = NSPoint(
+                x: min(max(location.x / max(bounds.width, 1), 0), 1),
+                y: min(max(location.y / max(bounds.height, 1), 0), 1)
+            )
+            let screenPoint = window?.convertPoint(toScreen: event.locationInWindow) ?? NSEvent.mouseLocation
             zoomScrollAccumulator += delta
             let step: CGFloat = 5
             while zoomScrollAccumulator >= step {
                 zoomScrollAccumulator -= step
-                onZoomStep?(1)
+                onZoomStep?(1, anchor, screenPoint)
             }
             while zoomScrollAccumulator <= -step {
                 zoomScrollAccumulator += step
-                onZoomStep?(-1)
+                onZoomStep?(-1, anchor, screenPoint)
             }
             return
         }

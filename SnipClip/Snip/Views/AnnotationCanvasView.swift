@@ -25,8 +25,10 @@ final class AnnotationCanvasView: NSView {
     private var activeTextEditor: NSTextField?
     private let history = UndoManager()
     private var scrollAccumulator: CGFloat = 0
+    private var zoomScrollAccumulator: CGFloat = 0
     private var widthHUDLocation: NSPoint = .zero
     private var widthHUDExpiry: Date?
+    private(set) var displayScale: CGFloat = 1
 
     private static let lineWidthRange: ClosedRange<CGFloat> = 1...20
 
@@ -47,6 +49,7 @@ final class AnnotationCanvasView: NSView {
     var onEscape: (() -> Void)?
     var onToggleToolbar: (() -> Void)?
     var onDoubleClickClose: (() -> Void)?
+    var onZoomStep: ((Int) -> Void)?
 
     var canUndo: Bool { history.canUndo }
     var canRedo: Bool { history.canRedo }
@@ -63,16 +66,43 @@ final class AnnotationCanvasView: NSView {
         return image
     }
 
+    func setDisplayScale(_ scale: CGFloat) {
+        displayScale = scale
+        frame.size = NSSize(width: baseImage.size.width * scale, height: baseImage.size.height * scale)
+        needsDisplay = true
+    }
+
     override func draw(_ dirtyRect: NSRect) {
-        baseImage.draw(in: bounds)
+        NSGraphicsContext.saveGraphicsState()
+        let transform = NSAffineTransform()
+        transform.scale(by: displayScale)
+        transform.concat()
+        let imageRect = NSRect(origin: .zero, size: baseImage.size)
+        baseImage.draw(in: imageRect)
         shapes.forEach { $0.draw(baseImage: baseImage) }
         inProgressShape?.draw(baseImage: baseImage)
-        drawWidthHUD()
+        NSGraphicsContext.restoreGraphicsState()
+        if isEditable {
+            drawWidthHUD()
+        }
     }
 
     override func scrollWheel(with event: NSEvent) {
         guard isEditable else {
-            super.scrollWheel(with: event)
+            var delta = event.scrollingDeltaY
+            if event.isDirectionInvertedFromDevice {
+                delta = -delta
+            }
+            zoomScrollAccumulator += delta
+            let step: CGFloat = 5
+            while zoomScrollAccumulator >= step {
+                zoomScrollAccumulator -= step
+                onZoomStep?(1)
+            }
+            while zoomScrollAccumulator <= -step {
+                zoomScrollAccumulator += step
+                onZoomStep?(-1)
+            }
             return
         }
         // Normalize so that physically scrolling up always means "thicker" regardless

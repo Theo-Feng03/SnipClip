@@ -19,6 +19,8 @@ final class SnipAnnotationWindowController: NSWindowController {
     private let canvasView: AnnotationCanvasView
     private let toolbarView: AnnotationToolbarView
     private let borderFrameView = SnipBorderFrameView(frame: .zero)
+    private let baseImageSize: NSSize
+    private var viewingScale: CGFloat = 1
     private var showsBorder = false {
         didSet { borderFrameView.isHidden = !showsBorder }
     }
@@ -32,10 +34,13 @@ final class SnipAnnotationWindowController: NSWindowController {
     // ring sits flush against the canvas with no visible gap, mirroring how addBorderIfNeeded(to:)
     // pads the real exported image.
     private static let previewMargin: CGFloat = borderWidth
+    private static let viewingScaleRange: ClosedRange<CGFloat> = 0.25...4
+    private static let viewingScaleStep: CGFloat = 0.1
 
     init(image: NSImage, screenPoint: NSPoint) {
         let canvas = AnnotationCanvasView(baseImage: image)
         self.canvasView = canvas
+        self.baseImageSize = image.size
         let toolbar = AnnotationToolbarView(frame: .zero)
         self.toolbarView = toolbar
 
@@ -127,6 +132,7 @@ private extension SnipAnnotationWindowController {
         canvasView.onEscape = { [weak self] in self?.finish(.cancel) }
         canvasView.onToggleToolbar = { [weak self] in self?.toggleToolbar() }
         canvasView.onDoubleClickClose = { [weak self] in self?.finish(.cancel) }
+        canvasView.onZoomStep = { [weak self] direction in self?.zoomViewingMode(direction: direction) }
     }
 
     func toggleToolbar() {
@@ -135,13 +141,59 @@ private extension SnipAnnotationWindowController {
         // With the toolbar hidden the window is in "viewing" mode: drawing is disabled and
         // dragging the image moves the window instead (see AnnotationCanvasView.isEditable).
         canvasView.isEditable = !isHidden
-        let canvasY = isHidden ? Self.previewMargin : Self.toolbarHeight + Self.previewMargin
-        canvasView.setFrameOrigin(NSPoint(x: canvasView.frame.origin.x, y: canvasY))
-        updateBorderFrame()
+        if isHidden {
+            viewingScale = 1
+            resizeViewingWindow(to: viewingScale)
+        } else {
+            restoreEditingWindow()
+        }
     }
 
     func updateBorderFrame() {
         borderFrameView.frame = canvasView.frame.insetBy(dx: -Self.previewMargin, dy: -Self.previewMargin)
+    }
+
+    func zoomViewingMode(direction: Int) {
+        guard toolbarView.isHidden, direction != 0 else { return }
+        let proposed = viewingScale + CGFloat(direction) * Self.viewingScaleStep
+        let clamped = min(max(proposed, Self.viewingScaleRange.lowerBound), Self.viewingScaleRange.upperBound)
+        guard clamped != viewingScale else { return }
+        viewingScale = clamped
+        resizeViewingWindow(to: viewingScale)
+    }
+
+    func resizeViewingWindow(to scale: CGFloat) {
+        guard let window else { return }
+        let center = NSPoint(x: window.frame.midX, y: window.frame.midY)
+        canvasView.setDisplayScale(scale)
+        let contentSize = NSSize(
+            width: canvasView.frame.width + Self.previewMargin * 2,
+            height: canvasView.frame.height + Self.previewMargin * 2
+        )
+        window.setContentSize(contentSize)
+        window.setFrameOrigin(NSPoint(x: center.x - window.frame.width / 2, y: center.y - window.frame.height / 2))
+        canvasView.setFrameOrigin(NSPoint(x: Self.previewMargin, y: Self.previewMargin))
+        updateBorderFrame()
+    }
+
+    func restoreEditingWindow() {
+        guard let window else { return }
+        let center = NSPoint(x: window.frame.midX, y: window.frame.midY)
+        viewingScale = 1
+        canvasView.setDisplayScale(1)
+        let minimumToolbarWidth = toolbarView.fittingSize.width + Self.reservedDragSpace
+        let contentSize = NSSize(
+            width: max(baseImageSize.width + Self.previewMargin * 2, minimumToolbarWidth),
+            height: baseImageSize.height + Self.previewMargin * 2 + Self.toolbarHeight
+        )
+        window.setContentSize(contentSize)
+        window.setFrameOrigin(NSPoint(x: center.x - window.frame.width / 2, y: center.y - window.frame.height / 2))
+        toolbarView.frame = NSRect(x: 0, y: 0, width: contentSize.width, height: Self.toolbarHeight)
+        canvasView.setFrameOrigin(NSPoint(
+            x: (contentSize.width - baseImageSize.width) / 2,
+            y: Self.toolbarHeight + Self.previewMargin
+        ))
+        updateBorderFrame()
     }
 
     func pickColor() {
